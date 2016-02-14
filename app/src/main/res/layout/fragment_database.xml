@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    android:orientation="vertical"
+    android:id="@+id/database_fragment">
+
+    <TextView
+        android:id="@+id/records_label"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:capitalize="words"
+        android:textColor="#000"
+        android:textSize="22sp"
+        android:paddingTop="16dp"
+        android:paddingBottom="16dp"
+        android:textAlignment="center"
+        android:text="@string/records_label" />
+    <Button
+        android:id="@+id/clear_database"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/clear_database"/>
+    <Button
+        android:id="@+id/add_row"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/add_row"/>
+    <Button
+        android:id="@+id/count_rows"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/count_rows"/>
+</LinearLayout>

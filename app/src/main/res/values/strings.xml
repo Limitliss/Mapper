@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">Mapper</string>
+    <string name="start_tracking">Start Tracking</string>
+    <string name="stop_tracking">Stop Tracking</string>
+    <string name="status">Status</string>
+    <string name="records_label">Records</string>
+    <string name="clear_database">Clear Database</string>
+    <string name="add_row">Add Row</string>
+    <string name="count_rows">Count</string>
+    <string name="remote_service_started">Remote service started</string>
+    <string name="remote_service_stopped">Remote service stopped</string>
+    <string name="remote_service_connected">Connected to service</string>
+    <string name="remote_service_disconnected">Disconnected from service</string>
+    <string name="title_activity_display_message">My Message</string>
+    <string name="google_app_id">228554928275-q21cva2ub90563su8qo05p7i83qbicsl.apps.googleusercontent.com</string>
+    <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">AIzaSyBCjbh5KLClmoKxwdGSO1MntGXnw0eHL2Y</string>
+
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_map">Map</string>
+</resources>

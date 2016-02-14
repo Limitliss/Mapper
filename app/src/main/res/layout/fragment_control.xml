@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    android:orientation="vertical"
+    android:id="@+id/content">
+    <TextView
+        android:id="@+id/status"
+        style="@style/BigText"
+        android:text="@string/status" />
+    <Button
+        android:id="@+id/service_control_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/start_tracking"/>
+    <TextView
+        style="@style/Fill"
+        android:id="@+id/averageAcc"
+        android:text="Avg Acc = 20" />
+    <TextView
+        style="@style/Fill"
+        android:id="@+id/minAcc"
+        android:text="Min Acc = 5" />
+    <TextView
+        style="@style/Fill"
+        android:id="@+id/totalLoc"
+        android:text="Total Co-Ords = 170" />
+    <TextView
+        style="@style/Fill"
+        android:id="@+id/badCount"
+        android:text="Rejcected Co-Ords = 5" />
+</LinearLayout>
