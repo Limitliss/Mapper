@@ -27,17 +27,15 @@ import io.unearthing.mapper.model.definitions.LocationTableHelper;
 import io.unearthing.mapper.model.definitions.LocationTableHelper.LocationTableContract;
 
 public class LocationDbLocal implements LocationDb {
-    private Context context;
-    private LocationTableHelper mDbHelper;
+    private LocationTableHelper mLocationTable;
 
     public LocationDbLocal(Context context){
-        this.context = context;
-        mDbHelper = new LocationTableHelper(context);
+        mLocationTable = new LocationTableHelper(context);
     }
 
     @Override
     public long addLocation(double longitude, double latitude, float accuracy){
-        SQLiteDatabase db = mDbHelper.getWritableDatabase();
+        SQLiteDatabase db = mLocationTable.getWritableDatabase();
 
         ContentValues values = new ContentValues();
         values.put(LocationTableContract.COLUMN_NAME_LATITUDE, latitude);
@@ -49,7 +47,7 @@ public class LocationDbLocal implements LocationDb {
     }
 
     public Cursor getLocations(){
-        SQLiteDatabase db = mDbHelper.getReadableDatabase();
+        SQLiteDatabase db = mLocationTable.getReadableDatabase();
         String[] columns = {LocationTableContract.COLUMN_NAME_LATITUDE,
                 LocationTableContract.COLUMN_NAME_LONGITUDE,
                 LocationTableContract.COLUMN_NAME_ACCURACY};
@@ -59,7 +57,7 @@ public class LocationDbLocal implements LocationDb {
 
     @Override
     public int countRows(){
-        SQLiteDatabase db = mDbHelper.getReadableDatabase();
+        SQLiteDatabase db = mLocationTable.getReadableDatabase();
         String query = "select count(" + LocationTableContract._ID + ") as count from " + LocationTableContract.TABLE_NAME;
         Cursor cursor = db.rawQuery(query, null);
         if(cursor.moveToFirst()){
@@ -70,7 +68,8 @@ public class LocationDbLocal implements LocationDb {
 
     @Override
     public void clearDatabase(){
-        SQLiteDatabase db = mDbHelper.getWritableDatabase();
-        mDbHelper.onUpgrade(db,4,4);
+        SQLiteDatabase db = mLocationTable.getWritableDatabase();
+        mLocationTable.onUpgrade(db, 4, 4);
+    }
     }
 }
