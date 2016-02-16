@@ -17,15 +17,19 @@
 
 package io.unearthing.mapper.ui.fragments;
 
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 
 import io.unearthing.mapper.R;
 import io.unearthing.mapper.model.LocationDbLocal;
+import io.unearthing.mapper.model.definitions.TripTableHelper;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -34,6 +38,7 @@ public class DatabaseFragment extends Fragment {
 
     LocationDbLocal db;
     TextView recordCountLabel;
+    long tripID;
     public DatabaseFragment() {
     }
 
@@ -47,6 +52,8 @@ public class DatabaseFragment extends Fragment {
         view.findViewById(R.id.add_row).setOnClickListener(this.addRow());
         view.findViewById(R.id.count_rows).setOnClickListener(this.countRows());
         view.findViewById(R.id.clear_database).setOnClickListener(this.clearDatabase());
+        view.findViewById(R.id.addTrip).setOnClickListener(this.addTrip());
+        view.findViewById(R.id.count_trips).setOnClickListener(this.countTrips());
         recordCountLabel = (TextView) view.findViewById(R.id.records_label);
         return view;
     }
@@ -55,9 +62,19 @@ public class DatabaseFragment extends Fragment {
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                db.addLocation(1, 1, 1);
+                db.addLocation(1, 1, 1,tripID);
             }
         };
+    }
+
+    public View.OnClickListener addTrip(){
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                tripID = db.startSession();
+            }
+        };
+
     }
 
     public View.OnClickListener countRows(){
@@ -75,6 +92,19 @@ public class DatabaseFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 db.clearDatabase();
+            }
+        };
+    }
+    public View.OnClickListener countTrips(){
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Cursor c = db.getTrips();
+                SimpleCursorAdapter listAdapter = new SimpleCursorAdapter(getContext(),
+                        R.layout.trip_list_item,
+                        c,
+                        new String[] { "title"},//,"count"
+                        new int[] { R.id.trip_title });//, R.id.location_count
             }
         };
     }

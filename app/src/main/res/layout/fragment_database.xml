@@ -35,4 +35,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/count_rows"/>
+
+    <Button
+        android:id="@+id/addTrip"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Add trip"/>
+    <Button
+        android:id="@+id/count_trips"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Count trip"/>
 </LinearLayout>

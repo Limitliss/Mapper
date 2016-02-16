@@ -35,12 +35,12 @@ public class TripTableHelper extends SQLiteOpenHelper  {
                     TripTableContract._ID                   + " INTEGER PRIMARY KEY AUTOINCREMENT," +
                     TripTableContract.COLUMN_NAME_START  +" INTEGER," +
                     TripTableContract.COLUMN_NAME_END +" INTEGER," +
-                    TripTableContract.COLUMN_NAME_TITLE +" STRING," +
+                    TripTableContract.COLUMN_NAME_TITLE +" STRING" +
                     ")";
     private static final String SQL_DELETE_TABLE =
             "DROP TABLE IF EXISTS " + TripTableContract.TABLE_NAME;
 
-    public static final int DATABASE_VERSION = 1;
+    public static final int DATABASE_VERSION = 8;
     public static final String DATABASE_NAME = "LocationStore.db";
 
     public TripTableHelper(Context context){

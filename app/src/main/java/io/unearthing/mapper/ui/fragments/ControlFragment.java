@@ -32,6 +32,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import io.unearthing.mapper.ILocationService;
+import io.unearthing.mapper.model.LocationDbLocal;
 import io.unearthing.mapper.services.LocationService;
 import io.unearthing.mapper.R;
 
@@ -40,7 +41,6 @@ public class ControlFragment extends Fragment implements View.OnClickListener {
     private ILocationService mLocationService;
     private Button mControlButton;
     private Activity mActivity;
-
     private final String mServiceName = "io.unearthing.mapper.services.LocationService";
     private boolean mServiceRunning = false;
 
@@ -67,7 +67,6 @@ public class ControlFragment extends Fragment implements View.OnClickListener {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
         mActivity = getActivity();
         //TODO: try not to use getActivity
         // Context context = (Context)getContext();

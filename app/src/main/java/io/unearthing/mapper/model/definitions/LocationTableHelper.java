@@ -34,11 +34,13 @@ public class LocationTableHelper extends SQLiteOpenHelper {
         public static final String COLUMN_NAME_BEARING = "bearing";
         public static final String COLUMN_NAME_ALTITUDE = "altitude";
         public static final String COLUMN_NAME_TIMESTAMP = "timestamp";
+        public static final String COLUMN_NAME_TRIP  = "trip";
 
     }
     private static final String SQL_CREATE_TABLE =
             "CREATE TABLE " + LocationTableContract.TABLE_NAME  + "(" +
                     LocationTableContract._ID                   + " INTEGER PRIMARY KEY AUTOINCREMENT," +
+                    LocationTableContract.COLUMN_NAME_TRIP      +" INTEGER," +
                     LocationTableContract.COLUMN_NAME_PROVIDER  +" TEXT," +
                     LocationTableContract.COLUMN_NAME_LATITUDE  +" REAL," +
                     LocationTableContract.COLUMN_NAME_LONGITUDE +" REAL," +
@@ -51,7 +53,7 @@ public class LocationTableHelper extends SQLiteOpenHelper {
     private static final String SQL_DELETE_TABLE =
             "DROP TABLE IF EXISTS " + LocationTableContract.TABLE_NAME;
 
-    public static final int DATABASE_VERSION = 7;
+    public static final int DATABASE_VERSION = 8;
     public static final String DATABASE_NAME = "LocationStore.db";
 
     public LocationTableHelper(Context context){

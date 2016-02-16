@@ -25,16 +25,20 @@ import android.database.sqlite.SQLiteDatabase;
 
 import io.unearthing.mapper.model.definitions.LocationTableHelper;
 import io.unearthing.mapper.model.definitions.LocationTableHelper.LocationTableContract;
+import io.unearthing.mapper.model.definitions.TripTableHelper;
+import io.unearthing.mapper.model.definitions.TripTableHelper.TripTableContract;
 
 public class LocationDbLocal implements LocationDb {
     private LocationTableHelper mLocationTable;
+    private TripTableHelper mTripTable;
 
     public LocationDbLocal(Context context){
         mLocationTable = new LocationTableHelper(context);
+        mTripTable = new TripTableHelper(context);
     }
 
     @Override
-    public long addLocation(double longitude, double latitude, float accuracy){
+    public long addLocation(double longitude, double latitude, float accuracy,long tripID){
         SQLiteDatabase db = mLocationTable.getWritableDatabase();
 
         ContentValues values = new ContentValues();
@@ -42,6 +46,7 @@ public class LocationDbLocal implements LocationDb {
         values.put(LocationTableContract.COLUMN_NAME_LONGITUDE, longitude);
         values.put(LocationTableContract.COLUMN_NAME_TIMESTAMP, System.currentTimeMillis());
         values.put(LocationTableContract.COLUMN_NAME_ACCURACY, accuracy);
+        values.put(LocationTableContract.COLUMN_NAME_TRIP, tripID);
         long id = db.insert(LocationTableContract.TABLE_NAME, null, values);
         return id;
     }
@@ -51,7 +56,7 @@ public class LocationDbLocal implements LocationDb {
         String[] columns = {LocationTableContract.COLUMN_NAME_LATITUDE,
                 LocationTableContract.COLUMN_NAME_LONGITUDE,
                 LocationTableContract.COLUMN_NAME_ACCURACY};
-        Cursor cursor = db.query(LocationTableContract.TABLE_NAME, columns, LocationTableContract.COLUMN_NAME_ACCURACY+ " < 20", null, null, null, LocationTableContract.COLUMN_NAME_TIMESTAMP + " ASC", null);
+        Cursor cursor = db.query(LocationTableContract.TABLE_NAME, columns, LocationTableContract.COLUMN_NAME_ACCURACY + " < 20", null, null, null, LocationTableContract.COLUMN_NAME_TIMESTAMP + " ASC", null);
         return cursor;
     }
 
@@ -66,10 +71,36 @@ public class LocationDbLocal implements LocationDb {
         return -1;
     }
 
+    public Cursor getTrips(){
+        SQLiteDatabase db = mTripTable.getReadableDatabase();
+        //String query = "SELECT t.title as title, count(l._id) as count from trip t INNER JOIN location l on t._id = l.trip WHERE t._id = 2";
+        String query = "SELECT _id, title from trip";
+        return db.rawQuery(query,null);
+    }
+
     @Override
     public void clearDatabase(){
         SQLiteDatabase db = mLocationTable.getWritableDatabase();
         mLocationTable.onUpgrade(db, 4, 4);
     }
+
+    @Override
+    public long startSession() {
+        SQLiteDatabase db = mTripTable.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(TripTableContract.COLUMN_NAME_START, System.currentTimeMillis());
+        values.put(TripTableContract.COLUMN_NAME_TITLE, "Untitled");
+        return db.insert(TripTableContract.TABLE_NAME, null, values);
+    }
+
+    @Override
+    public boolean endSession(long id) {
+        SQLiteDatabase db = mTripTable.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(TripTableContract.COLUMN_NAME_END, System.currentTimeMillis());
+        int rowsAffected = db.update(TripTableContract.TABLE_NAME, values,"_ID = ?",new String[]{Long.toString(id)});
+        if (rowsAffected == 1) return true;
+        return false;
     }
 }

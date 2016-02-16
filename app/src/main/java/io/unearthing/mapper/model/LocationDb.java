@@ -21,9 +21,13 @@ package io.unearthing.mapper.model;
  * Created by billybonks on 28/1/16.
  */
 public interface LocationDb {
-    long addLocation(double longitude, double latitude, float accuracy);
+    long addLocation(double longitude, double latitude, float accuracy, long tripID);
 
     int countRows();
 
     void clearDatabase();
+
+    long startSession();
+
+    boolean endSession(long id);
 }

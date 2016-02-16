@@ -32,12 +32,13 @@ import android.widget.ListView;
 import io.unearthing.mapper.R;
 import io.unearthing.mapper.ui.fragments.ControlFragment;
 import io.unearthing.mapper.ui.fragments.DatabaseFragment;
+import io.unearthing.mapper.ui.fragments.TripListFragment;
 
 public class AbstractActivity extends AppCompatActivity implements ListView.OnItemClickListener {
 
     protected DrawerLayout mDrawerLayout;
     protected Class currentFragment = null;
-    protected final String[] drawerOptions = {"Control","Info", "Debug"};
+    protected final String[] drawerOptions = {"Control", "Trips", "Info" ,"Debug"};
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,9 +67,12 @@ public class AbstractActivity extends AppCompatActivity implements ListView.OnIt
                 switchFragment(ControlFragment.class);
                 break;
             case 1:
-                switchFragment(DatabaseFragment.class);
+                switchFragment(TripListFragment.class);
                 break;
             case 2:
+                switchFragment(DatabaseFragment.class);
+                break;
+            case 3:
                 Intent intent = new Intent(this, MapActivity.class);
                 startActivity(intent);
         }

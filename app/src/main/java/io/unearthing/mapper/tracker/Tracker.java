@@ -31,6 +31,7 @@ public class Tracker implements LocationListener, LocationManagerListener {
 
     private Context context;
     private LocationDb mDb;
+    private long mSessionId;
 
     public Tracker(Context context){
         mDb = new LocationDbLocal(context);
@@ -43,12 +44,13 @@ public class Tracker implements LocationListener, LocationManagerListener {
         if(location.hasAccuracy()){
             accuracy = location.getAccuracy();
         }
-        long id = mDb.addLocation(location.getLongitude(),location.getLatitude(), accuracy);
+        long id = mDb.addLocation(location.getLongitude(),location.getLatitude(), accuracy,mSessionId);
         Toast.makeText(context, Float.toString(accuracy), Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onConnected() {
+        mSessionId = mDb.startSession();
         Toast.makeText(context, "Connected", Toast.LENGTH_SHORT).show();
     }
 
@@ -76,6 +78,7 @@ public class Tracker implements LocationListener, LocationManagerListener {
     }
     @Override
     public void onDisconnected() {
+        mDb.endSession(mSessionId);
         Toast.makeText(context, "Disconnected", Toast.LENGTH_SHORT).show();
     }
 }
