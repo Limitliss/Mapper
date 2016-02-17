@@ -26,6 +26,9 @@ import android.os.Bundle;
 
 import com.facebook.stetho.Stetho;
 
+import io.unearthing.mapper.R;
+import io.unearthing.mapper.model.LocationDbCloudant;
+
 public class MainActivity extends AbstractActivity {
 
     private final static int REQUEST_FINE_LOCATION_PERMISSION = 3;
@@ -33,6 +36,10 @@ public class MainActivity extends AbstractActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        String username = getBaseContext().getString(R.string.cloudant_username);
+        String password = getBaseContext().getString(R.string.cloudant_password);
+        String account = getBaseContext().getString(R.string.cloudant_host);
+        LocationDbCloudant cloudant = new LocationDbCloudant(username,password,account);
         Stetho.initializeWithDefaults(this);
     }
 
