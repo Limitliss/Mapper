@@ -32,7 +32,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import io.unearthing.mapper.ILocationService;
-import io.unearthing.mapper.model.LocationDbLocal;
 import io.unearthing.mapper.services.LocationService;
 import io.unearthing.mapper.R;
 

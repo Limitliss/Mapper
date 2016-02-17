@@ -31,7 +31,7 @@ import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.SimpleCursorAdapter;
 import io.unearthing.mapper.R;
-import io.unearthing.mapper.model.LocationDbLocal;
+import io.unearthing.mapper.model.helpers.LocationDbLocal;
 public class TripListFragment extends Fragment {
 
 
