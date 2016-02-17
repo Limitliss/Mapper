@@ -18,7 +18,6 @@
 package io.unearthing.mapper.ui.fragments;
 
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.view.LayoutInflater;
@@ -28,8 +27,9 @@ import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 
 import io.unearthing.mapper.R;
-import io.unearthing.mapper.model.LocationDbLocal;
-import io.unearthing.mapper.model.definitions.TripTableHelper;
+import io.unearthing.mapper.model.Location;
+import io.unearthing.mapper.model.helpers.LocationDbLocal;
+import io.unearthing.mapper.model.Trip;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -62,7 +62,16 @@ public class DatabaseFragment extends Fragment {
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                db.addLocation(1, 1, 1,1, 1, 1, 1,tripID);
+                Location location = new Location(getContext());
+                location.setAccuracy(1);
+                location.setAltitude(1);
+                location.setBearing(1);
+                location.setLatitude(1);
+                location.setLongitude(1);
+                location.setSpeed(1);
+                location.setTimeStamp(1);
+                location.setTripId(1);
+                location.save();
             }
         };
     }
@@ -71,7 +80,9 @@ public class DatabaseFragment extends Fragment {
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                tripID = db.startSession();
+                Trip trip = new Trip(getContext());
+                tripID = trip.start();
+                trip.end();
             }
         };
 

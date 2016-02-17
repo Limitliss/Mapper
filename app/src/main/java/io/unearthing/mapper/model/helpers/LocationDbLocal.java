@@ -15,7 +15,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package io.unearthing.mapper.model;
+package io.unearthing.mapper.model.helpers;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -23,6 +23,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 
+import io.unearthing.mapper.model.Location;
 import io.unearthing.mapper.model.definitions.LocationTableHelper;
 import io.unearthing.mapper.model.definitions.LocationTableHelper.LocationTableContract;
 import io.unearthing.mapper.model.definitions.TripTableHelper;
@@ -55,31 +56,20 @@ public class LocationDbLocal implements LocationDb {
     }
 
     @Override
-    public long addLocation(double longitude, double latitude, float accuracy, float bearing, double altitude, double speed, float timeStamp, long tripID) {
-        SQLiteDatabase db = mLocationTable.getWritableDatabase();
-
-        ContentValues values = new ContentValues();
-        values.put(LocationTableContract.COLUMN_NAME_LATITUDE, latitude);
-        values.put(LocationTableContract.COLUMN_NAME_LONGITUDE, longitude);
-        values.put(LocationTableContract.COLUMN_NAME_TIMESTAMP, timeStamp);
-        values.put(LocationTableContract.COLUMN_NAME_ACCURACY, accuracy);
-        values.put(LocationTableContract.COLUMN_NAME_BEARING, bearing);
-        values.put(LocationTableContract.COLUMN_NAME_SPEED, speed);
-        values.put(LocationTableContract.COLUMN_NAME_ALTITUDE, altitude);
-        values.put(LocationTableContract.COLUMN_NAME_TRIP, tripID);
-        long id = db.insert(LocationTableContract.TABLE_NAME, null, values);
-        return id;
-    }
-
-    @Override
     public int countTripLocations() {
-        return 0;
+        SQLiteDatabase db = mLocationTable.getReadableDatabase();
+        String query = "select count(" + TripTableContract._ID + ") as count from " + LocationTableContract.TABLE_NAME;
+        Cursor cursor = db.rawQuery(query, null);
+        if(cursor.moveToFirst()){
+            return cursor.getInt(cursor.getColumnIndex("count"));
+        }
+        return -1;
     }
 
     @Override
     public int countTrips() {
-        SQLiteDatabase db = mLocationTable.getReadableDatabase();
-        String query = "select count(" + LocationTableContract._ID + ") as count from " + LocationTableContract.TABLE_NAME;
+        SQLiteDatabase db = mTripTable.getReadableDatabase();
+        String query = "select count(" + TripTableContract._ID + ") as count from " + TripTableContract.TABLE_NAME;
         Cursor cursor = db.rawQuery(query, null);
         if(cursor.moveToFirst()){
             return cursor.getInt(cursor.getColumnIndex("count"));
@@ -91,40 +81,32 @@ public class LocationDbLocal implements LocationDb {
     public void clearDatabase(){
         SQLiteDatabase db = mLocationTable.getWritableDatabase();
         mLocationTable.onUpgrade(db, 4, 4);
+        SQLiteDatabase tripDB = mTripTable.getWritableDatabase();
+        mLocationTable.onUpgrade(tripDB, 4, 4);
     }
 
     @Override
-    public long startSession() {
+    public long addSession(long startTime, long endTime, String title) {
         SQLiteDatabase db = mTripTable.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put(TripTableContract.COLUMN_NAME_START, System.currentTimeMillis());
-        values.put(TripTableContract.COLUMN_NAME_TITLE, "Untitled");
+        values.put(TripTableContract.COLUMN_NAME_START, startTime);
+        values.put(TripTableContract.COLUMN_NAME_END, endTime);
+        values.put(TripTableContract.COLUMN_NAME_TITLE, title);
         return db.insert(TripTableContract.TABLE_NAME, null, values);
     }
 
     @Override
-    public boolean endSession(long id) {
-        SQLiteDatabase db = mTripTable.getWritableDatabase();
-
-        ContentValues values = new ContentValues();
-        values.put(TripTableContract.COLUMN_NAME_END, System.currentTimeMillis());
-        int rowsAffected = db.update(TripTableContract.TABLE_NAME, values,"_ID = ?",new String[]{Long.toString(id)});
-        if (rowsAffected == 1) return true;
-        return false;
-    }
-
-    @Override
-    public long addSession(long startTime, long endTime, String Title) {
+    public int deleteSession(long id) {
         return 0;
     }
 
     @Override
-    public long deleteSession(long id) {
+    public int deleteSessionLocations(long sessionId) {
         return 0;
     }
 
     @Override
-    public long deleteLocation(long id) {
-        return 0;
+    public int[] addBulkLocations(Location[] locations) {
+        return new int[0];
     }
 }

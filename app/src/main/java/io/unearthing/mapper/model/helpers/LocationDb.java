@@ -15,13 +15,14 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package io.unearthing.mapper.model;
+package io.unearthing.mapper.model.helpers;
+
+import io.unearthing.mapper.model.Location;
 
 /**
  * Created by billybonks on 28/1/16.
  */
 public interface LocationDb {
-    long addLocation(double longitude, double latitude, float accuracy, float bearing, double altitude, double speed, float timeStamp, long tripID);
 
     int countTripLocations();
 
@@ -29,14 +30,12 @@ public interface LocationDb {
 
     void clearDatabase();
 
-    long startSession();
+    long addSession(long startTime, long endTime, String title);
 
-    boolean endSession(long id);
+    int deleteSession(long id);
 
-    long addSession(long startTime, long endTime, String Title);
+    int deleteSessionLocations(long sessionId);
 
-    long deleteSession(long id);
-
-    long deleteLocation(long id);
+    int[] addBulkLocations(Location[] locations);
 
 }

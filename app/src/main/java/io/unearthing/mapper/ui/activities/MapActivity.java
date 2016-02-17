@@ -21,7 +21,7 @@ import android.database.Cursor;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import io.unearthing.mapper.R;
-import io.unearthing.mapper.model.LocationDbLocal;
+import io.unearthing.mapper.model.helpers.LocationDbLocal;
 import io.unearthing.mapper.model.definitions.LocationTableHelper.LocationTableContract;
 
 import com.google.android.gms.maps.CameraUpdateFactory;

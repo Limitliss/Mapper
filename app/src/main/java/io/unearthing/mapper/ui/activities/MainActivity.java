@@ -27,7 +27,7 @@ import android.os.Bundle;
 import com.facebook.stetho.Stetho;
 
 import io.unearthing.mapper.R;
-import io.unearthing.mapper.model.LocationDbCloudant;
+import io.unearthing.mapper.model.helpers.LocationDbCloudant;
 
 public class MainActivity extends AbstractActivity {
 

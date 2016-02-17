@@ -24,14 +24,15 @@ import android.os.Vibrator;
 
 import com.google.android.gms.location.LocationListener;
 
-import io.unearthing.mapper.model.LocationDb;
-import io.unearthing.mapper.model.LocationDbLocal;
+import io.unearthing.mapper.model.helpers.LocationDb;
+import io.unearthing.mapper.model.helpers.LocationDbLocal;
+import io.unearthing.mapper.model.Trip;
 
 public class Tracker implements LocationListener, LocationManagerListener {
 
     private Context context;
     private LocationDb mDb;
-    private long mSessionId;
+    private Trip mTrip;
 
     public Tracker(Context context){
         mDb = new LocationDbLocal(context);
@@ -44,20 +45,23 @@ public class Tracker implements LocationListener, LocationManagerListener {
         if(location.hasAccuracy()){
             accuracy = location.getAccuracy();
         }
-        long id = mDb.addLocation(location.getLongitude(),
-                location.getLatitude(),
-                accuracy,
-                location.getBearing(),
-                location.getAltitude(),
-                location.getSpeed(),
-                location.getTime(),
-                mSessionId);
+        io.unearthing.mapper.model.Location mLocation = new io.unearthing.mapper.model.Location(context);
+        mLocation.setAccuracy(accuracy);
+        mLocation.setAltitude(location.getAltitude());
+        mLocation.setBearing(location.getBearing());
+        mLocation.setLatitude(location.getLatitude());
+        mLocation.setLongitude(location.getLongitude());
+        mLocation.setSpeed(location.getSpeed());
+        mLocation.setTimeStamp(location.getTime());
+        mLocation.setTripId(mTrip.getId());
+        mLocation.save();
         Toast.makeText(context, Float.toString(accuracy), Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onConnected() {
-        mSessionId = mDb.startSession();
+        mTrip = new Trip(context);
+        mTrip.start();
         Toast.makeText(context, "Connected", Toast.LENGTH_SHORT).show();
     }
 
@@ -85,7 +89,7 @@ public class Tracker implements LocationListener, LocationManagerListener {
     }
     @Override
     public void onDisconnected() {
-        mDb.endSession(mSessionId);
+        mTrip.end();
         Toast.makeText(context, "Disconnected", Toast.LENGTH_SHORT).show();
     }
 }
