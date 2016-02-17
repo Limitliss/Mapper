@@ -19,11 +19,10 @@ package io.unearthing.mapper.model.definitions;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
 import android.provider.BaseColumns;
 
-public class LocationTableHelper extends SQLiteOpenHelper {
-    public static abstract class LocationTableContract implements BaseColumns {
+public class LocationTableHelper extends TableOpener {
+    public static abstract class LocationTableContract extends TableOpener implements BaseColumns {
 
         public static final String TABLE_NAME = "location";
         public static final String COLUMN_NAME_LATITUDE = "latitude";
@@ -36,6 +35,9 @@ public class LocationTableHelper extends SQLiteOpenHelper {
         public static final String COLUMN_NAME_TIMESTAMP = "timestamp";
         public static final String COLUMN_NAME_TRIP  = "trip";
 
+        public LocationTableContract(Context context) {
+            super(context);
+        }
     }
     private static final String SQL_CREATE_TABLE =
             "CREATE TABLE " + LocationTableContract.TABLE_NAME  + "(" +
@@ -53,11 +55,10 @@ public class LocationTableHelper extends SQLiteOpenHelper {
     private static final String SQL_DELETE_TABLE =
             "DROP TABLE IF EXISTS " + LocationTableContract.TABLE_NAME;
 
-    public static final int DATABASE_VERSION = 8;
-    public static final String DATABASE_NAME = "LocationStore.db";
+
 
     public LocationTableHelper(Context context){
-        super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        super(context);
     }
 
     public void onCreate(SQLiteDatabase db) {

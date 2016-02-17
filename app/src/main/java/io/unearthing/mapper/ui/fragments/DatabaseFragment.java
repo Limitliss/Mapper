@@ -62,7 +62,7 @@ public class DatabaseFragment extends Fragment {
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                db.addLocation(1, 1, 1,tripID);
+                db.addLocation(1, 1, 1,1, 1, 1, 1,tripID);
             }
         };
     }
@@ -81,7 +81,7 @@ public class DatabaseFragment extends Fragment {
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int rows = db.countRows();
+                int rows = db.countTripLocations();
                 recordCountLabel.setText(rows + " Records");
             }
         };

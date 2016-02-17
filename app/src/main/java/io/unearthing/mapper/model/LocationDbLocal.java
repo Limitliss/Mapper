@@ -37,19 +37,6 @@ public class LocationDbLocal implements LocationDb {
         mTripTable = new TripTableHelper(context);
     }
 
-    @Override
-    public long addLocation(double longitude, double latitude, float accuracy,long tripID){
-        SQLiteDatabase db = mLocationTable.getWritableDatabase();
-
-        ContentValues values = new ContentValues();
-        values.put(LocationTableContract.COLUMN_NAME_LATITUDE, latitude);
-        values.put(LocationTableContract.COLUMN_NAME_LONGITUDE, longitude);
-        values.put(LocationTableContract.COLUMN_NAME_TIMESTAMP, System.currentTimeMillis());
-        values.put(LocationTableContract.COLUMN_NAME_ACCURACY, accuracy);
-        values.put(LocationTableContract.COLUMN_NAME_TRIP, tripID);
-        long id = db.insert(LocationTableContract.TABLE_NAME, null, values);
-        return id;
-    }
 
     public Cursor getLocations(){
         SQLiteDatabase db = mLocationTable.getReadableDatabase();
@@ -60,8 +47,37 @@ public class LocationDbLocal implements LocationDb {
         return cursor;
     }
 
+    public Cursor getTrips(){
+        SQLiteDatabase db = mTripTable.getReadableDatabase();
+        //String query = "SELECT t.title as title, count(l._id) as count from trip t INNER JOIN location l on t._id = l.trip WHERE t._id = 2";
+        String query = "SELECT _id, title from trip";
+        return db.rawQuery(query,null);
+    }
+
     @Override
-    public int countRows(){
+    public long addLocation(double longitude, double latitude, float accuracy, float bearing, double altitude, double speed, float timeStamp, long tripID) {
+        SQLiteDatabase db = mLocationTable.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(LocationTableContract.COLUMN_NAME_LATITUDE, latitude);
+        values.put(LocationTableContract.COLUMN_NAME_LONGITUDE, longitude);
+        values.put(LocationTableContract.COLUMN_NAME_TIMESTAMP, timeStamp);
+        values.put(LocationTableContract.COLUMN_NAME_ACCURACY, accuracy);
+        values.put(LocationTableContract.COLUMN_NAME_BEARING, bearing);
+        values.put(LocationTableContract.COLUMN_NAME_SPEED, speed);
+        values.put(LocationTableContract.COLUMN_NAME_ALTITUDE, altitude);
+        values.put(LocationTableContract.COLUMN_NAME_TRIP, tripID);
+        long id = db.insert(LocationTableContract.TABLE_NAME, null, values);
+        return id;
+    }
+
+    @Override
+    public int countTripLocations() {
+        return 0;
+    }
+
+    @Override
+    public int countTrips() {
         SQLiteDatabase db = mLocationTable.getReadableDatabase();
         String query = "select count(" + LocationTableContract._ID + ") as count from " + LocationTableContract.TABLE_NAME;
         Cursor cursor = db.rawQuery(query, null);
@@ -69,13 +85,6 @@ public class LocationDbLocal implements LocationDb {
             return cursor.getInt(cursor.getColumnIndex("count"));
         }
         return -1;
-    }
-
-    public Cursor getTrips(){
-        SQLiteDatabase db = mTripTable.getReadableDatabase();
-        //String query = "SELECT t.title as title, count(l._id) as count from trip t INNER JOIN location l on t._id = l.trip WHERE t._id = 2";
-        String query = "SELECT _id, title from trip";
-        return db.rawQuery(query,null);
     }
 
     @Override
@@ -102,5 +111,20 @@ public class LocationDbLocal implements LocationDb {
         int rowsAffected = db.update(TripTableContract.TABLE_NAME, values,"_ID = ?",new String[]{Long.toString(id)});
         if (rowsAffected == 1) return true;
         return false;
+    }
+
+    @Override
+    public long addSession(long startTime, long endTime, String Title) {
+        return 0;
+    }
+
+    @Override
+    public long deleteSession(long id) {
+        return 0;
+    }
+
+    @Override
+    public long deleteLocation(long id) {
+        return 0;
     }
 }
