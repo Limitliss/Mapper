@@ -70,23 +70,24 @@ public class TripListFragment extends Fragment {
         LayoutInflater inflater = (LayoutInflater)
                 getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view = inflater.inflate(R.layout.trip_pop_up, null, false);
+        view.findViewById(R.id.sync_trip).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("asd", "asd");
+            }
+        });
+        view.findViewById(R.id.view_trip).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("asd", "asd");
+            }
+        });
         PopupWindow pw = new PopupWindow(
                 view,
                 300,
                 300,
                 true);
-        view.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(v.getId() == R.id.sync_trip){
-                    Log.d("asd","asd");
-                }
-                if(v.getId() == R.id.view_trip){
-                    Log.d("asd","asd");
-                }
-            }
-        });
         // The code below assumes that the root container has an id called 'main'
         pw.showAtLocation(getActivity().findViewById(R.id.content_frame), Gravity.CENTER, 0, 0);
+        }
     }
-}
