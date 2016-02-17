@@ -19,10 +19,9 @@ package io.unearthing.mapper.model.definitions;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
 import android.provider.BaseColumns;
 
-public class TripTableHelper extends SQLiteOpenHelper  {
+public class TripTableHelper extends TableOpener {
     public static abstract class TripTableContract implements BaseColumns {
         public static final String TABLE_NAME = "trip";
         public static final String COLUMN_NAME_START = "start";
@@ -40,11 +39,8 @@ public class TripTableHelper extends SQLiteOpenHelper  {
     private static final String SQL_DELETE_TABLE =
             "DROP TABLE IF EXISTS " + TripTableContract.TABLE_NAME;
 
-    public static final int DATABASE_VERSION = 8;
-    public static final String DATABASE_NAME = "LocationStore.db";
-
     public TripTableHelper(Context context){
-        super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        super(context);
     }
 
     public void onCreate(SQLiteDatabase db) {

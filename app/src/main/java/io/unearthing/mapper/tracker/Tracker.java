@@ -44,7 +44,14 @@ public class Tracker implements LocationListener, LocationManagerListener {
         if(location.hasAccuracy()){
             accuracy = location.getAccuracy();
         }
-        long id = mDb.addLocation(location.getLongitude(),location.getLatitude(), accuracy,mSessionId);
+        long id = mDb.addLocation(location.getLongitude(),
+                location.getLatitude(),
+                accuracy,
+                location.getBearing(),
+                location.getAltitude(),
+                location.getSpeed(),
+                location.getTime(),
+                mSessionId);
         Toast.makeText(context, Float.toString(accuracy), Toast.LENGTH_SHORT).show();
     }
 
