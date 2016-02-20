@@ -82,6 +82,11 @@ public class ControlFragment extends Fragment implements View.OnClickListener {
     }
 
     @Override
+    public void onDetach(){
+        mActivity.unbindService(mConnection);
+    }
+
+    @Override
     public void onClick(View v) {
         if(isServiceRunning()){
             stopService();
