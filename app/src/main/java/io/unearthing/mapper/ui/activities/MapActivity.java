@@ -21,6 +21,7 @@ import android.database.Cursor;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import io.unearthing.mapper.R;
+import io.unearthing.mapper.model.Trip;
 import io.unearthing.mapper.model.helpers.LocationDbLocal;
 import io.unearthing.mapper.model.definitions.LocationTableHelper.LocationTableContract;
 
@@ -35,15 +36,20 @@ import com.google.android.gms.maps.model.PolylineOptions;
 public class MapActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
+    private Trip mTrip;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        long tripId = getIntent().getLongExtra("trip", -1);
         setContentView(R.layout.activity_map);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+        mTrip = new Trip(getBaseContext());
+        mTrip.setId(tripId);
+
     }
 
 
@@ -63,8 +69,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
         // Add a marker in Sydney and move the camera
         LatLng sydney = new LatLng(-34, 151);
         mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(37.35, -122.0)));
-        LocationDbLocal db = new LocationDbLocal(this);
-        Cursor cursor = db.getLocations();
+        Cursor cursor = mTrip.getLocations();
         PolylineOptions path = new PolylineOptions();
         while(cursor.moveToNext()){
             double lat =  cursor.getDouble(cursor.getColumnIndex(LocationTableContract.COLUMN_NAME_LATITUDE));

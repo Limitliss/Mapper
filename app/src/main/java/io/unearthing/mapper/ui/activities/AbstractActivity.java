@@ -38,7 +38,7 @@ public class AbstractActivity extends AppCompatActivity implements ListView.OnIt
 
     protected DrawerLayout mDrawerLayout;
     protected Class currentFragment = null;
-    protected final String[] drawerOptions = {"Control", "Trips", "Info" ,"Debug"};
+    protected final String[] drawerOptions = {"Control", "Trips", "Debug"};
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,9 +72,6 @@ public class AbstractActivity extends AppCompatActivity implements ListView.OnIt
             case 2:
                 switchFragment(DatabaseFragment.class);
                 break;
-            case 3:
-                Intent intent = new Intent(this, MapActivity.class);
-                startActivity(intent);
         }
         mDrawerLayout.closeDrawers();
     }

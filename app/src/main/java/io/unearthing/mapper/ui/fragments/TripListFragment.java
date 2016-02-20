@@ -19,6 +19,7 @@ package io.unearthing.mapper.ui.fragments;
 
 import android.app.Fragment;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
@@ -32,6 +33,8 @@ import android.widget.PopupWindow;
 import android.widget.SimpleCursorAdapter;
 import io.unearthing.mapper.R;
 import io.unearthing.mapper.model.helpers.LocationDbLocal;
+import io.unearthing.mapper.ui.activities.MapActivity;
+
 public class TripListFragment extends Fragment {
 
 
@@ -59,34 +62,38 @@ public class TripListFragment extends Fragment {
         list.setOnItemClickListener(new ListView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                openPopup();
+                openPopup(id);
             }
         });
         list.setAdapter(listAdapter);
         return view;
     }
 
-    public void openPopup(){
+    public void openPopup(final long tripId){
         LayoutInflater inflater = (LayoutInflater)
                 getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view = inflater.inflate(R.layout.trip_pop_up, null, false);
+        final PopupWindow pw = new PopupWindow(
+                view,
+                300,
+                300,
+                true);
         view.findViewById(R.id.sync_trip).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.d("asd", "asd");
+                pw.dismiss();
             }
         });
         view.findViewById(R.id.view_trip).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("asd", "asd");
+                Intent intent = new Intent(getContext(), MapActivity.class);
+                intent.putExtra("trip", tripId);
+                pw.dismiss();
+                startActivity(intent);
             }
         });
-        PopupWindow pw = new PopupWindow(
-                view,
-                300,
-                300,
-                true);
         // The code below assumes that the root container has an id called 'main'
         pw.showAtLocation(getActivity().findViewById(R.id.content_frame), Gravity.CENTER, 0, 0);
         }
