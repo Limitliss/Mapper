@@ -6,12 +6,15 @@ import android.database.sqlite.SQLiteDatabase;
 
 //import com.google.gson.Gson;
 
+import com.google.gson.Gson;
+
 import io.unearthing.mapper.model.definitions.LocationTableHelper;
 
 /**
  * Created by billybonks on 16/2/16.
  */
 public class Location {
+    private double mId;
     private double mLongitude;
     private double mLatitude;
     private float mAccuracy;
@@ -31,7 +34,7 @@ public class Location {
     }
 
     public void setLongitude(double longitude) {
-        this.mLongitude = mLongitude;
+        this.mLongitude = longitude;
     }
 
     public double getLatitude() {
@@ -39,7 +42,7 @@ public class Location {
     }
 
     public void setLatitude(double latitude) {
-        this.mLatitude = mLatitude;
+        this.mLatitude = latitude;
     }
 
     public float getAccuracy() {
@@ -47,7 +50,7 @@ public class Location {
     }
 
     public void setAccuracy(float accuracy) {
-        this.mAccuracy = mAccuracy;
+        this.mAccuracy = accuracy;
     }
 
     public float getBearing() {
@@ -55,7 +58,7 @@ public class Location {
     }
 
     public void setBearing(float bearing) {
-        this.mBearing = mBearing;
+        this.mBearing = bearing;
     }
 
     public double getAltitude() {
@@ -63,7 +66,7 @@ public class Location {
     }
 
     public void setAltitude(double altitude) {
-        this.mAltitude = mAltitude;
+        this.mAltitude = altitude;
     }
 
     public double getSpeed() {
@@ -71,7 +74,7 @@ public class Location {
     }
 
     public void setSpeed(double speed) {
-        this.mSpeed = mSpeed;
+        this.mSpeed = speed;
     }
 
     public float getTimeStamp() {
@@ -79,7 +82,7 @@ public class Location {
     }
 
     public void setTimeStamp(float timeStamp) {
-        this.mTimeStamp = mTimeStamp;
+        this.mTimeStamp = timeStamp;
     }
 
     public long getTripId() {
@@ -87,10 +90,10 @@ public class Location {
     }
 
     public void setTripId(long tripId) {
-        this.mTripId = mTripId;
+        this.mTripId = tripId;
     }
 
-    public void save(){
+    public boolean save(){
         SQLiteDatabase db = mLocationTable.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(LocationTableHelper.LocationTableContract.COLUMN_NAME_LATITUDE, this.mLatitude);
@@ -101,11 +104,12 @@ public class Location {
         values.put(LocationTableHelper.LocationTableContract.COLUMN_NAME_SPEED, this.mSpeed);
         values.put(LocationTableHelper.LocationTableContract.COLUMN_NAME_ALTITUDE, this.mAltitude);
         values.put(LocationTableHelper.LocationTableContract.COLUMN_NAME_TRIP, this.mTripId);
-        long id = db.insert(LocationTableHelper.LocationTableContract.TABLE_NAME, null, values);
+        mId = db.insert(LocationTableHelper.LocationTableContract.TABLE_NAME, null, values);
+        return mId > 0;
     }
 
-//    public String toString(){
-//        Gson gson = new Gson();
-//        return gson.toJson(this);
-//    }
+    public String toString(){
+        Gson gson = new Gson();
+        return gson.toJson(this);
+    }
 }
