@@ -30,6 +30,7 @@ public class LocationDbCloudant implements LocationDb {
                 .username(username)
                 .password(password)
                 .build();
+
     }
 
     @Override
@@ -45,11 +46,6 @@ public class LocationDbCloudant implements LocationDb {
     @Override
     public void clearDatabase() {
 
-    }
-
-    @Override
-    public long addSession(long startTime, long endTime, String Title) {
-        return 0;
     }
 
     @Override

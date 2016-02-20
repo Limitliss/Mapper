@@ -81,18 +81,8 @@ public class LocationDbLocal implements LocationDb {
     public void clearDatabase(){
         SQLiteDatabase db = mLocationTable.getWritableDatabase();
         mLocationTable.onUpgrade(db, 4, 4);
-        SQLiteDatabase tripDB = mTripTable.getWritableDatabase();
-        mLocationTable.onUpgrade(tripDB, 4, 4);
-    }
-
-    @Override
-    public long addSession(long startTime, long endTime, String title) {
-        SQLiteDatabase db = mTripTable.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put(TripTableContract.COLUMN_NAME_START, startTime);
-        values.put(TripTableContract.COLUMN_NAME_END, endTime);
-        values.put(TripTableContract.COLUMN_NAME_TITLE, title);
-        return db.insert(TripTableContract.TABLE_NAME, null, values);
+        SQLiteDatabase tdb = mTripTable.getWritableDatabase();
+        mTripTable.onUpgrade(tdb,4,4);
     }
 
     @Override

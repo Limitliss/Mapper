@@ -30,8 +30,6 @@ public interface LocationDb {
 
     void clearDatabase();
 
-    long addSession(long startTime, long endTime, String title);
-
     int deleteSession(long id);
 
     int deleteSessionLocations(long sessionId);
