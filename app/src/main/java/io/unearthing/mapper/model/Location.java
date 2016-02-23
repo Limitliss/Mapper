@@ -2,6 +2,7 @@ package io.unearthing.mapper.model;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 //import com.google.gson.Gson;
@@ -14,7 +15,7 @@ import io.unearthing.mapper.model.definitions.LocationTableHelper;
  * Created by billybonks on 16/2/16.
  */
 public class Location {
-    private double mId;
+    private long mId;
     private double mLongitude;
     private double mLatitude;
     private float mAccuracy;
@@ -24,6 +25,17 @@ public class Location {
     private float mTimeStamp;
     private long mTripId;
     private LocationTableHelper mLocationTable;
+
+    public Location(Cursor cursor) {
+        mLatitude =  cursor.getDouble(cursor.getColumnIndex(LocationTableHelper.LocationTableContract.COLUMN_NAME_LATITUDE));
+        mLongitude =  cursor.getDouble(cursor.getColumnIndex(LocationTableHelper.LocationTableContract.COLUMN_NAME_LONGITUDE));
+        mAltitude =  cursor.getDouble(cursor.getColumnIndex(LocationTableHelper.LocationTableContract.COLUMN_NAME_ALTITUDE));
+        mSpeed =  cursor.getDouble(cursor.getColumnIndex(LocationTableHelper.LocationTableContract.COLUMN_NAME_SPEED));
+        mAccuracy = cursor.getFloat(cursor.getColumnIndex(LocationTableHelper.LocationTableContract.COLUMN_NAME_ACCURACY));
+        mBearing = cursor.getFloat(cursor.getColumnIndex(LocationTableHelper.LocationTableContract.COLUMN_NAME_BEARING));
+        mTimeStamp = cursor.getFloat(cursor.getColumnIndex(LocationTableHelper.LocationTableContract.COLUMN_NAME_TIMESTAMP));
+        mTripId = cursor.getLong(cursor.getColumnIndex(LocationTableHelper.LocationTableContract.COLUMN_NAME_TRIP));
+    }
 
     public Location(Context context){
         mLocationTable = new LocationTableHelper(context);

@@ -22,7 +22,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,11 +31,12 @@ import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.SimpleCursorAdapter;
 import io.unearthing.mapper.R;
+import io.unearthing.mapper.model.Trip;
 import io.unearthing.mapper.model.helpers.LocationDbLocal;
+import io.unearthing.mapper.services.UploadTrip;
 import io.unearthing.mapper.ui.activities.MapActivity;
 
 public class TripListFragment extends Fragment {
-
 
     public TripListFragment() {
 
@@ -81,8 +81,10 @@ public class TripListFragment extends Fragment {
         view.findViewById(R.id.sync_trip).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("asd", "asd");
-                pw.dismiss();
+                Trip trip = new Trip(getContext());
+                trip.find(tripId);
+                UploadTrip uploader = new UploadTrip();
+                uploader.execute(trip);
             }
         });
         view.findViewById(R.id.view_trip).setOnClickListener(new View.OnClickListener() {

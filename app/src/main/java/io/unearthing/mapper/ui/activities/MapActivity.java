@@ -22,7 +22,6 @@ import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import io.unearthing.mapper.R;
 import io.unearthing.mapper.model.Trip;
-import io.unearthing.mapper.model.helpers.LocationDbLocal;
 import io.unearthing.mapper.model.definitions.LocationTableHelper.LocationTableContract;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -69,7 +68,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
         // Add a marker in Sydney and move the camera
         LatLng sydney = new LatLng(-34, 151);
         mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(37.35, -122.0)));
-        Cursor cursor = mTrip.getLocations();
+        Cursor cursor = mTrip.getLocationsCursor();
         PolylineOptions path = new PolylineOptions();
         while(cursor.moveToNext()){
             double lat =  cursor.getDouble(cursor.getColumnIndex(LocationTableContract.COLUMN_NAME_LATITUDE));
