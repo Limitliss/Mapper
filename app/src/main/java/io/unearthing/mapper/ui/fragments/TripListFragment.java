@@ -30,6 +30,8 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.SimpleCursorAdapter;
+
+import io.unearthing.mapper.CloudentBuilder;
 import io.unearthing.mapper.R;
 import io.unearthing.mapper.model.Trip;
 import io.unearthing.mapper.model.helpers.LocationDbLocal;
@@ -83,7 +85,7 @@ public class TripListFragment extends Fragment {
             public void onClick(View v) {
                 Trip trip = new Trip(getContext());
                 trip.find(tripId);
-                UploadTrip uploader = new UploadTrip();
+                UploadTrip uploader = new UploadTrip(CloudentBuilder.getDatabase(getContext()));
                 uploader.execute(trip);
             }
         });

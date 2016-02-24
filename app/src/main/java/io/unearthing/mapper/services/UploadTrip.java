@@ -5,6 +5,8 @@ import android.os.Looper;
 import android.util.Log;
 
 import com.cloudant.client.api.Database;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -32,10 +34,13 @@ public class UploadTrip extends AsyncTask<Trip,Integer,Integer> {
     @Override
     protected Integer doInBackground(Trip... params) {
         for(Trip trip : params) {
-            JsonElement jelement = new JsonParser().parse(this.toString());
+            JsonElement jelement = new JsonParser().parse(trip.toString());
             JsonObject jobject = jelement.getAsJsonObject();
             mDb.save(jobject);
             List<Location> locations = trip.getLocations();
+            Gson gson = new GsonBuilder().create();
+            Location loc = locations.get(0);
+            String json = gson.toJson(loc);
             mDb.bulk(locations);
         }
         return 3;

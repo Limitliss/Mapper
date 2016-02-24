@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 //import com.google.gson.Gson;
 
 import com.google.gson.Gson;
+import com.google.gson.annotations.SerializedName;
 
 import io.unearthing.mapper.model.definitions.LocationTableHelper;
 
@@ -16,21 +17,38 @@ import io.unearthing.mapper.model.definitions.LocationTableHelper;
  */
 public class Location {
     private long mId;
+
+    @SerializedName("longitude")
     private double mLongitude;
+
+    @SerializedName("longitude")
     private double mLatitude;
+
+    @SerializedName("accuracy")
     private float mAccuracy;
+
+    @SerializedName("bearing")
     private float mBearing;
+
+    @SerializedName("altitude")
     private double mAltitude;
+
+    @SerializedName("speed")
     private double mSpeed;
+
+    @SerializedName("timestamp")
     private float mTimeStamp;
+
+    @SerializedName("trip_id")
     private long mTripId;
+
     private LocationTableHelper mLocationTable;
 
     public Location(Cursor cursor) {
         mLatitude =  cursor.getDouble(cursor.getColumnIndex(LocationTableHelper.LocationTableContract.COLUMN_NAME_LATITUDE));
-        mLongitude =  cursor.getDouble(cursor.getColumnIndex(LocationTableHelper.LocationTableContract.COLUMN_NAME_LONGITUDE));
-        mAltitude =  cursor.getDouble(cursor.getColumnIndex(LocationTableHelper.LocationTableContract.COLUMN_NAME_ALTITUDE));
-        mSpeed =  cursor.getDouble(cursor.getColumnIndex(LocationTableHelper.LocationTableContract.COLUMN_NAME_SPEED));
+        mLongitude = cursor.getDouble(cursor.getColumnIndex(LocationTableHelper.LocationTableContract.COLUMN_NAME_LONGITUDE));
+        mAltitude = cursor.getDouble(cursor.getColumnIndex(LocationTableHelper.LocationTableContract.COLUMN_NAME_ALTITUDE));
+        mSpeed = cursor.getDouble(cursor.getColumnIndex(LocationTableHelper.LocationTableContract.COLUMN_NAME_SPEED));
         mAccuracy = cursor.getFloat(cursor.getColumnIndex(LocationTableHelper.LocationTableContract.COLUMN_NAME_ACCURACY));
         mBearing = cursor.getFloat(cursor.getColumnIndex(LocationTableHelper.LocationTableContract.COLUMN_NAME_BEARING));
         mTimeStamp = cursor.getFloat(cursor.getColumnIndex(LocationTableHelper.LocationTableContract.COLUMN_NAME_TIMESTAMP));
@@ -118,10 +136,5 @@ public class Location {
         values.put(LocationTableHelper.LocationTableContract.COLUMN_NAME_TRIP, this.mTripId);
         mId = db.insert(LocationTableHelper.LocationTableContract.TABLE_NAME, null, values);
         return mId > 0;
-    }
-
-    public String toString(){
-        Gson gson = new Gson();
-        return gson.toJson(this);
     }
 }

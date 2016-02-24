@@ -49,7 +49,7 @@ public class Trip {
             String[] columns = {LocationTableHelper.LocationTableContract.COLUMN_NAME_LATITUDE,
                     LocationTableHelper.LocationTableContract.COLUMN_NAME_LONGITUDE,
                     LocationTableHelper.LocationTableContract.COLUMN_NAME_ACCURACY};
-            return db.query(LocationTableHelper.LocationTableContract.TABLE_NAME, columns,
+            return db.query(LocationTableHelper.LocationTableContract.TABLE_NAME, null,
                     LocationTableHelper.LocationTableContract.COLUMN_NAME_TRIP + " = "+ mId,
                     null, null, null, LocationTableHelper.LocationTableContract.COLUMN_NAME_TIMESTAMP + " ASC", null);
         } else {
@@ -58,7 +58,7 @@ public class Trip {
     }
 
     public List<Location> getLocations() {
-        if(mLocations != null){
+        if(mLocations == null){
             Cursor c = this.getLocationsCursor();
             mLocations = new ArrayList<Location>();
             int counter = 0;
@@ -110,6 +110,7 @@ public class Trip {
 
     private boolean populateFromCursor(Cursor cursor) {
         if (cursor.moveToFirst()) {
+            mId = cursor.getLong(cursor.getColumnIndex(TripTableHelper.TripTableContract._ID));
             mStartTime = cursor.getLong(cursor.getColumnIndex(TripTableHelper.TripTableContract.COLUMN_NAME_START));
             mEndTime = cursor.getLong(cursor.getColumnIndex(TripTableHelper.TripTableContract.COLUMN_NAME_END));
             mTitle = cursor.getString(cursor.getColumnIndex(TripTableHelper.TripTableContract.COLUMN_NAME_TITLE));
