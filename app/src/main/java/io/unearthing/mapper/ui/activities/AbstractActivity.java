@@ -20,7 +20,6 @@ package io.unearthing.mapper.ui.activities;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -30,7 +29,6 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import io.unearthing.mapper.R;
-import io.unearthing.mapper.ui.fragments.ControlFragment;
 import io.unearthing.mapper.ui.fragments.DatabaseFragment;
 import io.unearthing.mapper.ui.fragments.TripListFragment;
 
@@ -38,7 +36,7 @@ public class AbstractActivity extends AppCompatActivity implements ListView.OnIt
 
     protected DrawerLayout mDrawerLayout;
     protected Class currentFragment = null;
-    protected final String[] drawerOptions = {"Control", "Trips", "Debug"};
+    protected final String[] drawerOptions = {"Trips", "Debug"};
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,12 +62,9 @@ public class AbstractActivity extends AppCompatActivity implements ListView.OnIt
     protected void selectItem(int position) {
         switch (position) {
             case 0:
-                switchFragment(ControlFragment.class);
-                break;
-            case 1:
                 switchFragment(TripListFragment.class);
                 break;
-            case 2:
+            case 1:
                 switchFragment(DatabaseFragment.class);
                 break;
         }
