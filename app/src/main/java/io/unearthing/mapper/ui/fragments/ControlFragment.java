@@ -37,24 +37,9 @@ import io.unearthing.mapper.R;
 
 public class ControlFragment extends Fragment implements View.OnClickListener {
 
-    private ILocationService mLocationService;
     private Button mControlButton;
     private Activity mActivity;
-    private final String mServiceName = "io.unearthing.mapper.services.LocationService";
-    private boolean mServiceRunning = false;
 
-    private ServiceConnection mConnection = new ServiceConnection(){
-
-        @Override
-        public void onServiceConnected(ComponentName name, IBinder service) {
-            mLocationService = ILocationService.Stub.asInterface(service);
-        }
-
-        @Override
-        public void onServiceDisconnected(ComponentName name) {
-            mLocationService = null;
-        }
-    };
 
     public ControlFragment() {
 
@@ -67,16 +52,7 @@ public class ControlFragment extends Fragment implements View.OnClickListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         mActivity = getActivity();
-        //TODO: try not to use getActivity
-        // Context context = (Context)getContext();
         View view = inflater.inflate(R.layout.fragment_control, container, false);
-        mControlButton = (Button) view.findViewById(R.id.service_control_button);
-        boolean serviceStarted = isServiceStarted();
-        if(serviceStarted){
-            bindService();
-        }
-        setServiceRunning(serviceStarted);
-        mControlButton.setOnClickListener(this);
 
         return view;
     }
@@ -84,61 +60,11 @@ public class ControlFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onDetach(){
         super.onDetach();
-        if(isServiceRunning()){
-            mActivity.unbindService(mConnection);
-        }
     }
+
 
     @Override
     public void onClick(View v) {
-        if(isServiceRunning()){
-            stopService();
-        }else{
-            startService();
-        }
-    }
 
-    private void startService(){
-        Intent intent = new Intent(mActivity, LocationService.class);
-        mActivity.startService(intent);
-        this.bindService();
-        setServiceRunning(true);
-    }
-
-    private void bindService(){
-        Intent intent = new Intent(mActivity, LocationService.class);
-        mActivity.bindService(intent, mConnection, mActivity.BIND_AUTO_CREATE);
-    }
-
-    private void stopService(){
-        Intent intent = new Intent(mActivity, LocationService.class);
-        mActivity.stopService(intent);
-        mActivity.unbindService(mConnection);
-        setServiceRunning(false);
-    }
-
-
-    private boolean isServiceStarted(){
-        Activity activity = getActivity();
-        ActivityManager manager = (ActivityManager) activity.getSystemService(Context.ACTIVITY_SERVICE);
-        for(ActivityManager.RunningServiceInfo service: manager.getRunningServices(Integer.MAX_VALUE)){
-            if(mServiceName.equals(service.service.getClassName())){
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public boolean isServiceRunning() {
-        return mServiceRunning;
-    }
-
-    public void setServiceRunning(boolean serviceRunning) {
-        if(serviceRunning){
-            mControlButton.setText(R.string.stop_tracking);
-        }else{
-            mControlButton.setText(R.string.start_tracking);
-        }
-        this.mServiceRunning = serviceRunning;
     }
 }
