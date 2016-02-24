@@ -18,6 +18,7 @@
 package io.unearthing.mapper.ui.fragments;
 
 import android.app.Fragment;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -83,22 +84,32 @@ public class TripListFragment extends Fragment {
         view.findViewById(R.id.sync_trip).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Trip trip = new Trip(getContext());
-                trip.find(tripId);
-                UploadTrip uploader = new UploadTrip(CloudentBuilder.getDatabase(getContext()));
-                uploader.execute(trip);
+                pw.dismiss();
+                uploadTrip(tripId);
             }
         });
         view.findViewById(R.id.view_trip).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getContext(), MapActivity.class);
-                intent.putExtra("trip", tripId);
                 pw.dismiss();
-                startActivity(intent);
+                viewMap(tripId);
             }
         });
-        // The code below assumes that the root container has an id called 'main'
         pw.showAtLocation(getActivity().findViewById(R.id.content_frame), Gravity.CENTER, 0, 0);
-        }
     }
+
+    private void uploadTrip(long tripId){
+        Trip trip = new Trip(getContext());
+        trip.find(tripId);
+        ProgressDialog pd = new ProgressDialog(getContext());
+        pd.show();
+        UploadTrip uploader = new UploadTrip(CloudentBuilder.getDatabase(getContext()), pd);
+        uploader.execute(trip);
+    }
+
+    private void viewMap(long tripId){
+        Intent intent = new Intent(getContext(), MapActivity.class);
+        intent.putExtra("trip", tripId);
+        startActivity(intent);
+    }
+}

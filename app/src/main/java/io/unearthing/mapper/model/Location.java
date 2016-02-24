@@ -11,36 +11,13 @@ import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
 
 import io.unearthing.mapper.model.definitions.LocationTableHelper;
+import io.unearthing.mapper.model.helpers.AbstractLocation;
 
 /**
  * Created by billybonks on 16/2/16.
  */
-public class Location {
+public class Location extends AbstractLocation {
     private long mId;
-
-    @SerializedName("longitude")
-    private double mLongitude;
-
-    @SerializedName("longitude")
-    private double mLatitude;
-
-    @SerializedName("accuracy")
-    private float mAccuracy;
-
-    @SerializedName("bearing")
-    private float mBearing;
-
-    @SerializedName("altitude")
-    private double mAltitude;
-
-    @SerializedName("speed")
-    private double mSpeed;
-
-    @SerializedName("timestamp")
-    private float mTimeStamp;
-
-    @SerializedName("trip_id")
-    private long mTripId;
 
     private LocationTableHelper mLocationTable;
 

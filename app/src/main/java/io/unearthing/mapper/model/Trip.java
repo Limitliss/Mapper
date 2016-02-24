@@ -17,12 +17,15 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import io.unearthing.mapper.R;
 import io.unearthing.mapper.model.definitions.LocationTableHelper;
 import io.unearthing.mapper.model.definitions.TripTableHelper;
+import io.unearthing.mapper.model.helpers.AbstractLocation;
 
 /**
  * Created by billybonks on 16/2/16.
@@ -68,6 +71,18 @@ public class Trip {
             }
         }
         return mLocations;
+    }
+
+    public List<JsonObject> getLocationsAsJsonObject() {
+    Cursor c = this.getLocationsCursor();
+    ArrayList<JsonObject> locations = new ArrayList<JsonObject>();
+        Gson gson = new Gson();
+    while(c.moveToNext()){
+        String jsString = gson.toJson(new Location(c), AbstractLocation.class);
+        JsonObject jobject = new JsonParser().parse(jsString).getAsJsonObject();
+        locations.add(jobject);
+    }
+     return locations;
     }
 
     public long start(){

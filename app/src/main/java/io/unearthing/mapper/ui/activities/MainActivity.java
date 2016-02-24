@@ -26,6 +26,8 @@ import android.os.Bundle;
 
 import com.facebook.stetho.Stetho;
 
+import junit.framework.Test;
+
 import io.unearthing.mapper.R;
 import io.unearthing.mapper.model.Trip;
 import io.unearthing.mapper.services.UploadTrip;
