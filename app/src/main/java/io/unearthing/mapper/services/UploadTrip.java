@@ -2,23 +2,13 @@ package io.unearthing.mapper.services;
 
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
-import android.os.Looper;
-import android.util.Log;
-
 import com.cloudant.client.api.Database;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-
-import org.json.JSONObject;
-
 import java.util.List;
 
-import io.unearthing.mapper.model.Location;
 import io.unearthing.mapper.model.Trip;
-import io.unearthing.mapper.model.helpers.AbstractLocation;
 
 /**
  * Created by billybonks on 20/2/16.

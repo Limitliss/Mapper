@@ -31,6 +31,7 @@ import io.unearthing.mapper.ui.activities.MainActivity;
 import io.unearthing.mapper.tracker.FusedLocationManager;
 import io.unearthing.mapper.tracker.Tracker;
 import io.unearthing.mapper.ILocationService;
+
 public class LocationService extends Service {
     int mStartMode =  Service.START_NOT_STICKY;       // indicates how to behave if the service is killed
     boolean mAllowRebind; // indicates whether onRebind should be used

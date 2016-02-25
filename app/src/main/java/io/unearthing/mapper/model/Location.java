@@ -5,11 +5,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-//import com.google.gson.Gson;
-
-import com.google.gson.Gson;
-import com.google.gson.annotations.SerializedName;
-
 import io.unearthing.mapper.model.definitions.LocationTableHelper;
 import io.unearthing.mapper.model.helpers.AbstractLocation;
 

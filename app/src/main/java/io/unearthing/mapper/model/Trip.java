@@ -5,24 +5,16 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-//import com.google.gson.Gson;
-
-import com.cloudant.client.api.ClientBuilder;
 import com.cloudant.client.api.CloudantClient;
 import com.cloudant.client.api.Database;
-import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import io.unearthing.mapper.R;
 import io.unearthing.mapper.model.definitions.LocationTableHelper;
 import io.unearthing.mapper.model.definitions.TripTableHelper;
 import io.unearthing.mapper.model.helpers.AbstractLocation;

@@ -18,7 +18,6 @@
 package io.unearthing.mapper.ui.activities;
 
 import android.Manifest;
-import android.app.Activity;
 import android.app.ActivityManager;
 import android.content.ComponentName;
 import android.content.Context;
@@ -34,15 +33,9 @@ import android.os.Bundle;
 import android.view.View;
 
 
-import com.facebook.stetho.Stetho;
-
-import junit.framework.Test;
-
 import io.unearthing.mapper.ILocationService;
 import io.unearthing.mapper.R;
-import io.unearthing.mapper.model.Trip;
 import io.unearthing.mapper.services.LocationService;
-import io.unearthing.mapper.services.UploadTrip;
 
 public class MainActivity extends AbstractActivity {
 
