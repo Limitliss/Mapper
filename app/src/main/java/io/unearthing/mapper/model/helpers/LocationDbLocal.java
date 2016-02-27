@@ -37,14 +37,6 @@ public class LocationDbLocal implements LocationDb {
         mTripTable = new TripTableHelper(context);
     }
 
-
-    public Cursor getTrips(){
-        SQLiteDatabase db = mTripTable.getReadableDatabase();
-        //String query = "SELECT t.title as title, count(l._id) as count from trip t INNER JOIN location l on t._id = l.trip WHERE t._id = 2";
-        String query = "SELECT _id, title from trip order by _id DESC";
-        return db.rawQuery(query,null);
-    }
-
     @Override
     public int countTripLocations() {
         SQLiteDatabase db = mLocationTable.getReadableDatabase();

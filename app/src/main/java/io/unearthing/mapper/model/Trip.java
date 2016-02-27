@@ -116,6 +116,11 @@ public class Trip  extends AbstractTrip{
 
     }
 
+    public Cursor findAll(){
+        SQLiteDatabase db = mTripTable.getReadableDatabase();
+        String query = "SELECT _id, title from trip order by _id DESC";
+        return db.rawQuery(query,null);
+    }
     private boolean populateFromCursor(Cursor cursor) {
         if (cursor.moveToFirst()) {
             mId = cursor.getLong(cursor.getColumnIndex(TripTableHelper.TripTableContract._ID));

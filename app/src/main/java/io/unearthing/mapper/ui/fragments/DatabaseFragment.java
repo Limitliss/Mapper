@@ -17,6 +17,7 @@
 
 package io.unearthing.mapper.ui.fragments;
 
+import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.app.Fragment;
@@ -110,7 +111,7 @@ public class DatabaseFragment extends Fragment {
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Cursor c = db.getTrips();
+                Cursor c = new Trip(getContext()).findAll();
                 SimpleCursorAdapter listAdapter = new SimpleCursorAdapter(getContext(),
                         R.layout.trip_list_item,
                         c,

@@ -54,7 +54,7 @@ public class TripListFragment extends Fragment {
         final ViewGroup parentVw = container;
         View view = inflater.inflate(R.layout.fragment_trip_list, container, false);
         LocationDbLocal db = new LocationDbLocal(this.getContext());
-        Cursor c = db.getTrips();
+        Cursor c = new Trip(getContext()).findAll();
         SimpleCursorAdapter listAdapter = new SimpleCursorAdapter(getContext(),
                 R.layout.trip_list_item,
                 c,
