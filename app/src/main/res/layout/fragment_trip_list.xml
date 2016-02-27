@@ -11,5 +11,6 @@
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:drawSelectorOnTop="false"
-        android:choiceMode="multipleChoice" />
+        android:choiceMode="multipleChoice"
+        android:divider="#00000000"/>
 </LinearLayout>
