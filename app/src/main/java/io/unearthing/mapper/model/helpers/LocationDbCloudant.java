@@ -47,20 +47,4 @@ public class LocationDbCloudant implements LocationDb {
     public void clearDatabase() {
 
     }
-
-    @Override
-    public int deleteSession(long id) {
-        return 0;
-    }
-
-    @Override
-    public int deleteSessionLocations(long sessionId) {
-        return 0;
-    }
-
-    @Override
-    public int[] addBulkLocations(Location[] locations) {
-        return new int[0];
-    }
-
 }

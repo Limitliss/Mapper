@@ -30,10 +30,4 @@ public interface LocationDb {
 
     void clearDatabase();
 
-    int deleteSession(long id);
-
-    int deleteSessionLocations(long sessionId);
-
-    int[] addBulkLocations(Location[] locations);
-
 }

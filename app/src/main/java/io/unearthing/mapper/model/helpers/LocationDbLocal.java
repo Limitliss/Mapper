@@ -38,15 +38,6 @@ public class LocationDbLocal implements LocationDb {
     }
 
 
-    public Cursor getLocations(){
-        SQLiteDatabase db = mLocationTable.getReadableDatabase();
-        String[] columns = {LocationTableContract.COLUMN_NAME_LATITUDE,
-                LocationTableContract.COLUMN_NAME_LONGITUDE,
-                LocationTableContract.COLUMN_NAME_ACCURACY};
-        Cursor cursor = db.query(LocationTableContract.TABLE_NAME, columns, LocationTableContract.COLUMN_NAME_ACCURACY + " < 20", null, null, null, LocationTableContract.COLUMN_NAME_TIMESTAMP + " ASC", null);
-        return cursor;
-    }
-
     public Cursor getTrips(){
         SQLiteDatabase db = mTripTable.getReadableDatabase();
         //String query = "SELECT t.title as title, count(l._id) as count from trip t INNER JOIN location l on t._id = l.trip WHERE t._id = 2";
@@ -82,20 +73,5 @@ public class LocationDbLocal implements LocationDb {
         mLocationTable.onUpgrade(db, 4, 4);
         SQLiteDatabase tdb = mTripTable.getWritableDatabase();
         mTripTable.onUpgrade(tdb,4,4);
-    }
-
-    @Override
-    public int deleteSession(long id) {
-        return 0;
-    }
-
-    @Override
-    public int deleteSessionLocations(long sessionId) {
-        return 0;
-    }
-
-    @Override
-    public int[] addBulkLocations(Location[] locations) {
-        return new int[0];
     }
 }
