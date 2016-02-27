@@ -59,7 +59,7 @@ public class TripListFragment extends Fragment {
                 R.layout.trip_list_item,
                 c,
                 new String[] { "title", "_id"},//,"count"
-                new int[] { R.id.trip_title,R.id.location_count },//,
+                new int[] { R.id.trip_title },//,
                 0);
         ListView list = (ListView) view.findViewById(R.id.trip_list);
         list.setOnItemClickListener(new ListView.OnItemClickListener() {
