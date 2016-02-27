@@ -17,16 +17,11 @@ import java.util.List;
 
 import io.unearthing.mapper.model.definitions.LocationTableHelper;
 import io.unearthing.mapper.model.definitions.TripTableHelper;
-import io.unearthing.mapper.model.helpers.AbstractLocation;
 
 /**
  * Created by billybonks on 16/2/16.
  */
-public class Trip {
-    private long mId = -1;
-    private String mTitle;
-    private long mStartTime;
-    private long mEndTime;
+public class Trip  extends AbstractTrip{
     private List<Location> mLocations;
     private TripTableHelper mTripTable;
     private LocationTableHelper mLocationTable;
@@ -67,14 +62,14 @@ public class Trip {
     }
 
     public List<JsonObject> getLocationsAsJsonObject() {
-    Cursor c = this.getLocationsCursor();
-    ArrayList<JsonObject> locations = new ArrayList<JsonObject>();
+        Cursor c = this.getLocationsCursor();
+        ArrayList<JsonObject> locations = new ArrayList<JsonObject>();
         Gson gson = new Gson();
-    while(c.moveToNext()){
-        String jsString = gson.toJson(new Location(c), AbstractLocation.class);
-        JsonObject jobject = new JsonParser().parse(jsString).getAsJsonObject();
-        locations.add(jobject);
-    }
+        while(c.moveToNext()){
+            String jsString = gson.toJson(new Location(c), AbstractLocation.class);
+            JsonObject jobject = new JsonParser().parse(jsString).getAsJsonObject();
+            locations.add(jobject);
+        }
      return locations;
     }
 
@@ -172,8 +167,9 @@ public class Trip {
         this.mEndTime = endTime;
     }
 
-    public String toString(){
-       //return "{ start_time: " + mStartTime + ",\nend_time: " + mEndTime + ",\ntitle: " + mTitle + "\n}";
-        return "{start_time:"+mStartTime+",end_time:"+mEndTime+",title:"+mTitle+"}";
+    public String toString() {
+        Gson gson = new Gson();
+        return gson.toJson(this, AbstractLocation.class);
+        // return "{start_time:"+mStartTime+",end_time:"+mEndTime+",title:"+mTitle+"}";
     }
 }

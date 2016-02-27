@@ -1,4 +1,4 @@
-package io.unearthing.mapper.model.helpers;
+package io.unearthing.mapper.model;
 
 import com.google.gson.annotations.SerializedName;
 

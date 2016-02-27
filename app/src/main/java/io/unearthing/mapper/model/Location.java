@@ -6,7 +6,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import io.unearthing.mapper.model.definitions.LocationTableHelper;
-import io.unearthing.mapper.model.helpers.AbstractLocation;
 
 /**
  * Created by billybonks on 16/2/16.
