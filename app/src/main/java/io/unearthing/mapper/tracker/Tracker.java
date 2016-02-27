@@ -53,8 +53,8 @@ public class Tracker implements LocationListener, LocationManagerListener {
         mLocation.setLongitude(location.getLongitude());
         mLocation.setSpeed(location.getSpeed());
         mLocation.setTimeStamp(location.getTime());
-        mLocation.setTripId(mTrip.getId());
         mLocation.save();
+        mTrip.addLocation(mLocation);
         Toast.makeText(context, Float.toString(accuracy), Toast.LENGTH_SHORT).show();
     }
 

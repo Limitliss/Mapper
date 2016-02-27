@@ -36,6 +36,7 @@ public class Trip {
     public Trip(Context context){
         mTripTable = new TripTableHelper(context);
         mLocationTable = new LocationTableHelper(context);
+        mLocations = new ArrayList<Location>();
     }
 
     public Cursor getLocationsCursor() {
@@ -93,6 +94,11 @@ public class Trip {
         int rowsAffected = db.update(TripTableHelper.TripTableContract.TABLE_NAME, values,"_ID = ?",new String[]{Long.toString(mId)});
         if (rowsAffected == 1) return true;
         return false;
+    }
+
+    public void addLocation(Location location) {
+        location.setTripId(this.mId);
+        mLocations.add(location);
     }
 
     public boolean create(){
