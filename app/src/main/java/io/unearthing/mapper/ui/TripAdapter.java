@@ -44,7 +44,8 @@ public class TripAdapter extends RecyclerView.Adapter {
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         TripViewHolder tHolder = (TripViewHolder) holder;
         TextView txt = (TextView) tHolder.mCard.findViewById(R.id.trip_title);
-        txt.setText(Integer.toString(position));
+        Trip trip = mTrips.get(0);
+        txt.setText(trip.getTitle());
        // holder.mTextView.setText(mDataset[position]);
     }
 
