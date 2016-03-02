@@ -30,6 +30,21 @@ public class Location extends AbstractLocation {
         mLocationTable = new LocationTableHelper(context);
     }
 
+    public boolean save(){
+        SQLiteDatabase db = mLocationTable.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(LocationTableHelper.LocationTableContract.COLUMN_NAME_LATITUDE, this.mLatitude);
+        values.put(LocationTableHelper.LocationTableContract.COLUMN_NAME_LONGITUDE, this.mLongitude);
+        values.put(LocationTableHelper.LocationTableContract.COLUMN_NAME_TIMESTAMP, this.mTimeStamp);
+        values.put(LocationTableHelper.LocationTableContract.COLUMN_NAME_ACCURACY, this.mAccuracy);
+        values.put(LocationTableHelper.LocationTableContract.COLUMN_NAME_BEARING, this.mBearing);
+        values.put(LocationTableHelper.LocationTableContract.COLUMN_NAME_SPEED, this.mSpeed);
+        values.put(LocationTableHelper.LocationTableContract.COLUMN_NAME_ALTITUDE, this.mAltitude);
+        values.put(LocationTableHelper.LocationTableContract.COLUMN_NAME_TRIP, this.mTripId);
+        mId = db.insert(LocationTableHelper.LocationTableContract.TABLE_NAME, null, values);
+        return mId > 0;
+    }
+
     public double getLongitude() {
         return mLongitude;
     }
@@ -94,18 +109,4 @@ public class Location extends AbstractLocation {
         this.mTripId = tripId;
     }
 
-    public boolean save(){
-        SQLiteDatabase db = mLocationTable.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put(LocationTableHelper.LocationTableContract.COLUMN_NAME_LATITUDE, this.mLatitude);
-        values.put(LocationTableHelper.LocationTableContract.COLUMN_NAME_LONGITUDE, this.mLongitude);
-        values.put(LocationTableHelper.LocationTableContract.COLUMN_NAME_TIMESTAMP, this.mTimeStamp);
-        values.put(LocationTableHelper.LocationTableContract.COLUMN_NAME_ACCURACY, this.mAccuracy);
-        values.put(LocationTableHelper.LocationTableContract.COLUMN_NAME_BEARING, this.mBearing);
-        values.put(LocationTableHelper.LocationTableContract.COLUMN_NAME_SPEED, this.mSpeed);
-        values.put(LocationTableHelper.LocationTableContract.COLUMN_NAME_ALTITUDE, this.mAltitude);
-        values.put(LocationTableHelper.LocationTableContract.COLUMN_NAME_TRIP, this.mTripId);
-        mId = db.insert(LocationTableHelper.LocationTableContract.TABLE_NAME, null, values);
-        return mId > 0;
-    }
 }

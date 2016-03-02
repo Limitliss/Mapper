@@ -23,6 +23,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,11 +34,14 @@ import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.SimpleCursorAdapter;
 
+import java.util.List;
+
 import io.unearthing.mapper.CloudentBuilder;
 import io.unearthing.mapper.R;
 import io.unearthing.mapper.model.Trip;
 import io.unearthing.mapper.model.helpers.LocationDbLocal;
 import io.unearthing.mapper.services.UploadTrip;
+import io.unearthing.mapper.ui.TripAdapter;
 import io.unearthing.mapper.ui.activities.MapActivity;
 
 public class TripListFragment extends Fragment {
@@ -53,8 +58,14 @@ public class TripListFragment extends Fragment {
                              Bundle savedInstanceState) {
         final ViewGroup parentVw = container;
         View view = inflater.inflate(R.layout.fragment_trip_list, container, false);
-        LocationDbLocal db = new LocationDbLocal(this.getContext());
-        Cursor c = new Trip(getContext()).findAll();
+        List<Trip> trips =new Trip(getContext()).findAll(getContext());
+        TripAdapter adapter = new TripAdapter(trips);
+        RecyclerView mRecyclerView = (RecyclerView)view.findViewById(R.id.trip_list);
+        LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
+        mRecyclerView.setLayoutManager(mLayoutManager);
+        mRecyclerView.setAdapter(adapter);
+       /* LocationDbLocal db = new LocationDbLocal(this.getContext());
+        Cursor c = new Trip(getContext()).findAllCursor();
         SimpleCursorAdapter listAdapter = new SimpleCursorAdapter(getContext(),
                 R.layout.trip_list_item,
                 c,
@@ -68,7 +79,7 @@ public class TripListFragment extends Fragment {
                 openPopup(id);
             }
         });
-        list.setAdapter(listAdapter);
+        list.setAdapter(listAdapter);*/
         return view;
     }
 

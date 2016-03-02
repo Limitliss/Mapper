@@ -34,6 +34,13 @@ public class Trip  extends AbstractTrip{
         mLocations = new ArrayList<Location>();
     }
 
+    private Trip(Context context, Cursor cursor) {
+            mId = cursor.getLong(cursor.getColumnIndex(TripTableHelper.TripTableContract._ID));
+            mStartTime = cursor.getLong(cursor.getColumnIndex(TripTableHelper.TripTableContract.COLUMN_NAME_START));
+            mEndTime = cursor.getLong(cursor.getColumnIndex(TripTableHelper.TripTableContract.COLUMN_NAME_END));
+            mTitle = cursor.getString(cursor.getColumnIndex(TripTableHelper.TripTableContract.COLUMN_NAME_TITLE));
+    }
+
     public Cursor getLocationsCursor() {
         if(mId > -1) {
             SQLiteDatabase db = mLocationTable.getReadableDatabase();
@@ -116,11 +123,23 @@ public class Trip  extends AbstractTrip{
 
     }
 
-    public Cursor findAll(){
+    public Cursor findAllCursor(){
         SQLiteDatabase db = mTripTable.getReadableDatabase();
-        String query = "SELECT _id, title from trip order by _id DESC";
-        return db.rawQuery(query,null);
+        String query = "SELECT * from trip order by _id DESC";
+        return db.rawQuery(query, null);
     }
+
+    public List<Trip> findAll(Context context){
+        Cursor c =  findAllCursor();
+        List<Trip> trips = new ArrayList<Trip>();
+        while(c.moveToNext()) {
+            trips.add(new Trip(context,c));
+        }
+        c.close();
+        return trips;
+
+    }
+
     private boolean populateFromCursor(Cursor cursor) {
         if (cursor.moveToFirst()) {
             mId = cursor.getLong(cursor.getColumnIndex(TripTableHelper.TripTableContract._ID));
