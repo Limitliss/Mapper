@@ -64,22 +64,6 @@ public class TripListFragment extends Fragment {
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(adapter);
-       /* LocationDbLocal db = new LocationDbLocal(this.getContext());
-        Cursor c = new Trip(getContext()).findAllCursor();
-        SimpleCursorAdapter listAdapter = new SimpleCursorAdapter(getContext(),
-                R.layout.trip_list_item,
-                c,
-                new String[] { "title", "_id"},//,"count"
-                new int[] { R.id.trip_title },//,
-                0);
-        ListView list = (ListView) view.findViewById(R.id.trip_list);
-        list.setOnItemClickListener(new ListView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                openPopup(id);
-            }
-        });
-        list.setAdapter(listAdapter);*/
         return view;
     }
 
