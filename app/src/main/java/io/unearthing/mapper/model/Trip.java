@@ -121,7 +121,21 @@ public class Trip  extends AbstractTrip {
 
 
     public boolean delete(){
-        return false;
+        SQLiteDatabase tDb = mTripTable.getWritableDatabase();
+        SQLiteDatabase lDb = mLocationTable.getWritableDatabase();
+        String [] args =  new String[]{Long.toString(this.mId)};
+        int rowCount = tDb.delete(TripTableHelper.TripTableContract.TABLE_NAME,
+                "_id = ?",
+               args);
+        int locationsDeletedCount = lDb.delete(LocationTableHelper.LocationTableContract.TABLE_NAME,
+                LocationTableHelper.LocationTableContract.COLUMN_NAME_TRIP +" = ?",
+                args);
+        int locationCount = mLocations.size();
+        if((rowCount == 1) && (locationsDeletedCount == locationCount)){
+            return true;
+        }else{
+            return false;
+        }
     }
 
     public long getId() {

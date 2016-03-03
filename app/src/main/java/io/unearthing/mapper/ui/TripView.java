@@ -14,6 +14,8 @@ import android.widget.ImageButton;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
+import java.util.List;
+
 import io.unearthing.mapper.CloudentBuilder;
 import io.unearthing.mapper.R;
 import io.unearthing.mapper.model.Trip;
@@ -26,6 +28,7 @@ import io.unearthing.mapper.ui.activities.MapActivity;
 public class TripView implements View.OnClickListener {
     Trip mTrip;
     Activity mParent;
+    List<Trip> mTrips;
     TextView mPointsLabel;
     TextView mTimeSpentLabel;
     TextView mAltitudeLabel;
@@ -37,7 +40,7 @@ public class TripView implements View.OnClickListener {
 
     public TripView(View view, Activity parent){
         mView = view;
-        mParent = parent;
+        mParent = parent;//mTrips = trips;
         mTitle = (TextView) view.findViewById(R.id.trip_title);
         mTimeSpentLabel = (TextView) view.findViewById(R.id.time_display);
         mAccelerationLabel = (TextView) view.findViewById(R.id.acc_label);
@@ -50,22 +53,23 @@ public class TripView implements View.OnClickListener {
 
     public void populate(Trip trip){
         mTrip = trip;
-        mTitle.setText(trip.getTitle());
+        mTitle.setText(trip.getId() + ". " +trip.getTitle());
         mPointsLabel.setText(Integer.toString(trip.getLocations().size()));
     }
 
     @Override
     public void onClick(View v) {
-        openPopup(mTrip.getId());
+        openPopup(mTrip);
     }
 
-    public void openPopup(final long tripId){
+    public void openPopup(final Trip trip){
+        final long tripId = trip.getId();
         LayoutInflater inflater = LayoutInflater.from(getContext());
         View view = inflater.inflate(R.layout.trip_pop_up, null, false);
         final PopupWindow pw = new PopupWindow(
                 view,
-                300,
-                300,
+                400,
+                500,
                 true);
         view.findViewById(R.id.sync_trip).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -79,6 +83,15 @@ public class TripView implements View.OnClickListener {
             public void onClick(View v) {
                 pw.dismiss();
                 viewMap(tripId);
+            }
+        });
+
+        view.findViewById(R.id.delete_trip).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                pw.dismiss();
+                mTrip.delete();
+                mTrips.remove(mTrip);
             }
         });
         pw.showAtLocation(mParent.findViewById(R.id.content_frame), Gravity.CENTER, 0, 0);
