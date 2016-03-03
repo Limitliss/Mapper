@@ -29,14 +29,13 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import io.unearthing.mapper.R;
-import io.unearthing.mapper.ui.fragments.DatabaseFragment;
 import io.unearthing.mapper.ui.fragments.TripListFragment;
 
 public class AbstractActivity extends AppCompatActivity implements ListView.OnItemClickListener {
 
     protected DrawerLayout mDrawerLayout;
     protected Class currentFragment = null;
-    protected final String[] drawerOptions = {"Trips", "Debug"};
+    protected final String[] drawerOptions = {"Trips"};
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,9 +62,6 @@ public class AbstractActivity extends AppCompatActivity implements ListView.OnIt
         switch (position) {
             case 0:
                 switchFragment(TripListFragment.class);
-                break;
-            case 1:
-                switchFragment(DatabaseFragment.class);
                 break;
         }
         mDrawerLayout.closeDrawers();

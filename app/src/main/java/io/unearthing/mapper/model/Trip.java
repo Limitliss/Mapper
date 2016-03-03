@@ -171,7 +171,7 @@ public class Trip  extends AbstractTrip{
         return mTitle;
     }
 
-    public void setmTitle(String title) {
+    public void setTitle(String title) {
         this.mTitle = title;
     }
 
