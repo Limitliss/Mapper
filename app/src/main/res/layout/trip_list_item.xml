@@ -63,7 +63,7 @@
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="320"
-                android:id="@+id/textView2"
+                android:id="@+id/points_display"
                 android:layout_row="0"
                 android:layout_column="1" />
 

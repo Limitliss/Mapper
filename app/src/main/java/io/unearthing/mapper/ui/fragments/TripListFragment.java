@@ -46,64 +46,23 @@ import io.unearthing.mapper.ui.activities.MapActivity;
 
 public class TripListFragment extends Fragment {
 
+    List<Trip> mTrips;
+
     public TripListFragment() {
 
     }
 
-    /*
-        LIFE CYCLE OVERRIDES
-     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         final ViewGroup parentVw = container;
         View view = inflater.inflate(R.layout.fragment_trip_list, container, false);
-        List<Trip> trips =new Trip(getContext()).findAll(getContext());
-        TripAdapter adapter = new TripAdapter(trips);
+        mTrips =new Trip(getContext()).findAll(getContext());
+        TripAdapter adapter = new TripAdapter(mTrips, getActivity());
         RecyclerView mRecyclerView = (RecyclerView)view.findViewById(R.id.trip_list);
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(adapter);
         return view;
-    }
-
-    public void openPopup(final long tripId){
-        LayoutInflater inflater = (LayoutInflater)
-                getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View view = inflater.inflate(R.layout.trip_pop_up, null, false);
-        final PopupWindow pw = new PopupWindow(
-                view,
-                300,
-                300,
-                true);
-        view.findViewById(R.id.sync_trip).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                pw.dismiss();
-                uploadTrip(tripId);
-            }
-        });
-        view.findViewById(R.id.view_trip).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                pw.dismiss();
-                viewMap(tripId);
-            }
-        });
-        pw.showAtLocation(getActivity().findViewById(R.id.content_frame), Gravity.CENTER, 0, 0);
-    }
-
-    private void uploadTrip(long tripId){
-        Trip trip =  Trip.find(tripId);
-        ProgressDialog pd = new ProgressDialog(getContext());
-        pd.show();
-        UploadTrip uploader = new UploadTrip(CloudentBuilder.getDatabase(getContext()), pd);
-        uploader.execute(trip);
-    }
-
-    private void viewMap(long tripId){
-        Intent intent = new Intent(getContext(), MapActivity.class);
-        intent.putExtra("trip", tripId);
-        startActivity(intent);
     }
 }
