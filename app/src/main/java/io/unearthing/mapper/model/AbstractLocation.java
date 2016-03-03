@@ -6,7 +6,7 @@ import com.google.gson.annotations.SerializedName;
  * Created by billybonks on 24/2/16.
  */
 public abstract class AbstractLocation {
-    long mId;
+    long mId  = -1;
 
     @SerializedName("longitude")
     protected double mLongitude;

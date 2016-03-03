@@ -110,8 +110,7 @@ public class TripListFragment extends Fragment {
     }
 
     private void uploadTrip(long tripId){
-        Trip trip = new Trip(getContext());
-        trip.find(tripId);
+        Trip trip =  Trip.find(tripId);
         ProgressDialog pd = new ProgressDialog(getContext());
         pd.show();
         UploadTrip uploader = new UploadTrip(CloudentBuilder.getDatabase(getContext()), pd);

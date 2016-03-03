@@ -11,7 +11,6 @@ import io.unearthing.mapper.model.definitions.LocationTableHelper;
  * Created by billybonks on 16/2/16.
  */
 public class Location extends AbstractLocation {
-    private long mId;
 
     private LocationTableHelper mLocationTable;
 

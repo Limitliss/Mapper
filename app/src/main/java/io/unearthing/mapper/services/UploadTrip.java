@@ -6,6 +6,9 @@ import com.cloudant.client.api.Database;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+
+import org.json.JSONObject;
+
 import java.util.List;
 
 import io.unearthing.mapper.model.Trip;
@@ -36,9 +39,10 @@ public class UploadTrip extends AsyncTask<Trip,Integer,Integer> {
             publishProgress(calculateProgress(1));
             mDb.save(jobject);
             publishProgress(calculateProgress(2));
-            List<JsonObject> locations = trip.getLocationsAsJsonObject();
+            //get locations trip.getLocations
+            //convert to json
             publishProgress(calculateProgress(3));
-            mDb.bulk(locations);
+            //mDb.bulk(locations);
             publishProgress(calculateProgress(4));
         }
         return 1;

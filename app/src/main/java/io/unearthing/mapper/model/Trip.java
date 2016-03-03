@@ -21,12 +21,14 @@ import io.unearthing.mapper.model.definitions.TripTableHelper;
 /**
  * Created by billybonks on 16/2/16.
  */
-public class Trip  extends AbstractTrip{
+public class Trip  extends AbstractTrip {
+
     private List<Location> mLocations;
     private TripTableHelper mTripTable;
     private LocationTableHelper mLocationTable;
     private CloudantClient client;
     private Database db;
+
 
     public Trip(Context context){
         mTripTable = new TripTableHelper(context);
@@ -34,50 +36,12 @@ public class Trip  extends AbstractTrip{
         mLocations = new ArrayList<Location>();
     }
 
-    private Trip(Context context, Cursor cursor) {
-            mId = cursor.getLong(cursor.getColumnIndex(TripTableHelper.TripTableContract._ID));
-            mStartTime = cursor.getLong(cursor.getColumnIndex(TripTableHelper.TripTableContract.COLUMN_NAME_START));
-            mEndTime = cursor.getLong(cursor.getColumnIndex(TripTableHelper.TripTableContract.COLUMN_NAME_END));
-            mTitle = cursor.getString(cursor.getColumnIndex(TripTableHelper.TripTableContract.COLUMN_NAME_TITLE));
-    }
-
-    public Cursor getLocationsCursor() {
-        if(mId > -1) {
-            SQLiteDatabase db = mLocationTable.getReadableDatabase();
-            String[] columns = {LocationTableHelper.LocationTableContract.COLUMN_NAME_LATITUDE,
-                    LocationTableHelper.LocationTableContract.COLUMN_NAME_LONGITUDE,
-                    LocationTableHelper.LocationTableContract.COLUMN_NAME_ACCURACY};
-            return db.query(LocationTableHelper.LocationTableContract.TABLE_NAME, null,
-                    LocationTableHelper.LocationTableContract.COLUMN_NAME_TRIP + " = "+ mId,
-                    null, null, null, LocationTableHelper.LocationTableContract.COLUMN_NAME_TIMESTAMP + " ASC", null);
-        } else {
-            throw new Error("Needs a trip id");
-        }
-    }
-
-    public List<Location> getLocations() {
-        if(mLocations == null){
-            Cursor c = this.getLocationsCursor();
-            mLocations = new ArrayList<Location>();
-            int counter = 0;
-            while(c.moveToNext()){
-                mLocations.add( new Location(c));
-                counter++;
-            }
-        }
-        return mLocations;
-    }
-
-    public List<JsonObject> getLocationsAsJsonObject() {
-        Cursor c = this.getLocationsCursor();
-        ArrayList<JsonObject> locations = new ArrayList<JsonObject>();
-        Gson gson = new Gson();
-        while(c.moveToNext()){
-            String jsString = gson.toJson(new Location(c), AbstractLocation.class);
-            JsonObject jobject = new JsonParser().parse(jsString).getAsJsonObject();
-            locations.add(jobject);
-        }
-     return locations;
+    public Trip(Context context, Cursor cursor) {
+        this(context);
+        mId = cursor.getLong(cursor.getColumnIndex(TripTableHelper.TripTableContract._ID));
+        mStartTime = cursor.getLong(cursor.getColumnIndex(TripTableHelper.TripTableContract.COLUMN_NAME_START));
+        mEndTime = cursor.getLong(cursor.getColumnIndex(TripTableHelper.TripTableContract.COLUMN_NAME_END));
+        mTitle = cursor.getString(cursor.getColumnIndex(TripTableHelper.TripTableContract.COLUMN_NAME_TITLE));
     }
 
     public long start(){
@@ -103,54 +67,55 @@ public class Trip  extends AbstractTrip{
         mLocations.add(location);
     }
 
-    public boolean create(){
-        SQLiteDatabase db = mTripTable.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put(TripTableHelper.TripTableContract.COLUMN_NAME_START, this.mStartTime);
-        values.put(TripTableHelper.TripTableContract.COLUMN_NAME_END, this.mEndTime);
-        values.put(TripTableHelper.TripTableContract.COLUMN_NAME_TITLE, this.mTitle);
-        mId = db.insert(TripTableHelper.TripTableContract.TABLE_NAME, null, values);
-        return mId > 0;
+    public List<Location> getLocations() {
+        if(mLocations.size() > 0 && mId > -1){
+            Cursor c = this.getLocationsCursor();
+            mLocations = new ArrayList<Location>();
+            int counter = 0;
+            while(c.moveToNext()){
+                mLocations.add( new Location(c));
+                counter++;
+            }
+        }
+        return mLocations;
     }
 
-    public boolean find(long id){
+
+    public static Trip find(long id, Context context){
         String table = TripTableHelper.TripTableContract.TABLE_NAME;
         String where = "_ID = ?";
         String[] args = new String[]{Long.toString(id)};
-        SQLiteDatabase db = mTripTable.getReadableDatabase();
+        SQLiteDatabase db = new TripTableHelper(context).getReadableDatabase();
         Cursor c = db.query(table, null, where, args, null, null, null);
-        return populateFromCursor(c);
+        Trip trip = new Trip(context,c);
+        c.close();
+        return trip;
 
     }
 
-    public Cursor findAllCursor(){
-        SQLiteDatabase db = mTripTable.getReadableDatabase();
+    public static List<Trip> findAll(Context context){
+        SQLiteDatabase db = new TripTableHelper(context).getReadableDatabase();
         String query = "SELECT * from trip order by _id DESC";
-        return db.rawQuery(query, null);
-    }
-
-    public List<Trip> findAll(Context context){
-        Cursor c =  findAllCursor();
-        List<Trip> trips = new ArrayList<Trip>();
+        Cursor c =  db.rawQuery(query, null);
+        List<Trip> trips = new ArrayList<>();
         while(c.moveToNext()) {
             trips.add(new Trip(context,c));
         }
         c.close();
         return trips;
-
     }
 
-    private boolean populateFromCursor(Cursor cursor) {
-        if (cursor.moveToFirst()) {
-            mId = cursor.getLong(cursor.getColumnIndex(TripTableHelper.TripTableContract._ID));
-            mStartTime = cursor.getLong(cursor.getColumnIndex(TripTableHelper.TripTableContract.COLUMN_NAME_START));
-            mEndTime = cursor.getLong(cursor.getColumnIndex(TripTableHelper.TripTableContract.COLUMN_NAME_END));
-            mTitle = cursor.getString(cursor.getColumnIndex(TripTableHelper.TripTableContract.COLUMN_NAME_TITLE));
-            cursor.close();
-            return true;
+    private Cursor getLocationsCursor() {
+        if(mId > -1) {
+            SQLiteDatabase db = mLocationTable.getReadableDatabase();
+            String[] columns = {LocationTableHelper.LocationTableContract.COLUMN_NAME_LATITUDE,
+                    LocationTableHelper.LocationTableContract.COLUMN_NAME_LONGITUDE,
+                    LocationTableHelper.LocationTableContract.COLUMN_NAME_ACCURACY};
+            return db.query(LocationTableHelper.LocationTableContract.TABLE_NAME, null,
+                    LocationTableHelper.LocationTableContract.COLUMN_NAME_TRIP + " = "+ mId,
+                    null, null, null, LocationTableHelper.LocationTableContract.COLUMN_NAME_TIMESTAMP + " ASC", null);
         } else {
-            cursor.close();
-            return false;
+            throw new Error("Needs a trip id");
         }
     }
 
@@ -193,7 +158,6 @@ public class Trip  extends AbstractTrip{
 
     public String toString() {
         Gson gson = new Gson();
-        return gson.toJson(this, AbstractLocation.class);
-        // return "{start_time:"+mStartTime+",end_time:"+mEndTime+",title:"+mTitle+"}";
+        return gson.toJson(this, AbstractTrip.class);
     }
 }

@@ -46,8 +46,6 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-        mTrip = new Trip(getBaseContext());
-        mTrip.setId(tripId);
 
     }
 
@@ -68,14 +66,14 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
         // Add a marker in Sydney and move the camera
         LatLng sydney = new LatLng(-34, 151);
         mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(37.35, -122.0)));
-        Cursor cursor = mTrip.getLocationsCursor();
+        //Cursor cursor = mTrip.getLocations();
         PolylineOptions path = new PolylineOptions();
-        while(cursor.moveToNext()){
+       /* while(cursor.moveToNext()){
             double lat =  cursor.getDouble(cursor.getColumnIndex(LocationTableContract.COLUMN_NAME_LATITUDE));
             double longi =  cursor.getDouble(cursor.getColumnIndex(LocationTableContract.COLUMN_NAME_LONGITUDE));
             LatLng point = new LatLng(lat,longi);
             path.add(point);
-        }
+        }*/
         // Instantiates a new Polyline object and adds points to define a rectangle
         Polyline polyline = mMap.addPolyline(path);
 
