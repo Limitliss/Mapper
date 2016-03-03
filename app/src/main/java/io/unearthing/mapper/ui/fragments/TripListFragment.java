@@ -58,6 +58,9 @@ public class TripListFragment extends Fragment {
         final ViewGroup parentVw = container;
         View view = inflater.inflate(R.layout.fragment_trip_list, container, false);
         mTrips =new Trip(getContext()).findAll(getContext());
+        for(int i = 0; i < mTrips.size(); i++) {
+            mTrips.get(i).getLocations();
+        }
         TripAdapter adapter = new TripAdapter(mTrips, getActivity());
         RecyclerView mRecyclerView = (RecyclerView)view.findViewById(R.id.trip_list);
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());

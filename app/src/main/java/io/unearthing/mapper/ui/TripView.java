@@ -51,6 +51,7 @@ public class TripView implements View.OnClickListener {
     public void populate(Trip trip){
         mTrip = trip;
         mTitle.setText(trip.getTitle());
+        mPointsLabel.setText(Integer.toString(trip.getLocations().size()));
     }
 
     @Override
