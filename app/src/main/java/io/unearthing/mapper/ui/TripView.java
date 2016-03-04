@@ -19,6 +19,7 @@ import java.util.List;
 import io.unearthing.mapper.CloudentBuilder;
 import io.unearthing.mapper.R;
 import io.unearthing.mapper.model.Trip;
+import io.unearthing.mapper.model.TripSummary;
 import io.unearthing.mapper.services.UploadTrip;
 import io.unearthing.mapper.ui.activities.MapActivity;
 
@@ -26,7 +27,7 @@ import io.unearthing.mapper.ui.activities.MapActivity;
  * Created by billybonks on 3/3/16.
  */
 public class TripView implements View.OnClickListener {
-    Trip mTrip;
+    TripSummary mTrip;
     Activity mParent;
     List<Trip> mTrips;
     TextView mPointsLabel;
@@ -49,15 +50,16 @@ public class TripView implements View.OnClickListener {
         mOptions.setOnClickListener(this);
     }
 
-    public void populate(Trip trip){
+    public void populate(TripSummary trip){
         mTrip = trip;
-        mTitle.setText(trip.getId() + ". " +trip.getTitle());
-        mPointsLabel.setText(Integer.toString(trip.getLocations().size()));
+        mTitle.setText(""+trip.getId());
+        mPointsLabel.setText(Integer.toString(trip.getLocationCount()));
     }
 
     @Override
     public void onClick(View v) {
-        openPopup(mTrip);
+        Trip trip = Trip.find(mTrip.getTripId(), this.getContext());
+        openPopup(trip);
     }
 
     public void openPopup(final Trip trip){
@@ -88,7 +90,7 @@ public class TripView implements View.OnClickListener {
             @Override
             public void onClick(View v) {
                 pw.dismiss();
-                mTrip.delete();
+                trip.delete();
                 mTrips.remove(mTrip);
             }
         });

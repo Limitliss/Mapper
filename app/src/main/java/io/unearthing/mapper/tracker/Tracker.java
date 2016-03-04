@@ -26,11 +26,13 @@ import com.google.android.gms.location.LocationListener;
 
 import io.unearthing.mapper.model.TableOpener;
 import io.unearthing.mapper.model.Trip;
+import io.unearthing.mapper.model.TripSummary;
 
 public class Tracker implements LocationListener, LocationManagerListener {
 
     private Context context;
     private Trip mTrip;
+    private TripSummary mTripSummary;
 
     public Tracker(Context context){
         this.context = context;
@@ -42,16 +44,11 @@ public class Tracker implements LocationListener, LocationManagerListener {
         if(location.hasAccuracy()){
             accuracy = location.getAccuracy();
         }
-        io.unearthing.mapper.model.Location mLocation = new io.unearthing.mapper.model.Location(context);
-        mLocation.setAccuracy(accuracy);
-        mLocation.setAltitude(location.getAltitude());
-        mLocation.setBearing(location.getBearing());
-        mLocation.setLatitude(location.getLatitude());
-        mLocation.setLongitude(location.getLongitude());
-        mLocation.setSpeed(location.getSpeed());
-        mLocation.setTimeStamp(location.getTime());
+        io.unearthing.mapper.model.Location mLocation =
+                new io.unearthing.mapper.model.Location(context, location);
         mLocation.save();
-        mTrip.addLocation(mLocation);
+        mTripSummary.addLocation(mLocation);
+        mTripSummary.save();
         Toast.makeText(context, Float.toString(accuracy), Toast.LENGTH_SHORT).show();
     }
 
@@ -59,6 +56,8 @@ public class Tracker implements LocationListener, LocationManagerListener {
     public void onConnected() {
         mTrip = new Trip(context);
         mTrip.start();
+        mTripSummary = new TripSummary(context, mTrip);
+        mTripSummary.save();
         Toast.makeText(context, "Connected", Toast.LENGTH_SHORT).show();
     }
 
@@ -87,6 +86,7 @@ public class Tracker implements LocationListener, LocationManagerListener {
     @Override
     public void onDisconnected() {
         mTrip.end();
+        mTripSummary.save();
         Toast.makeText(context, "Disconnected", Toast.LENGTH_SHORT).show();
     }
 }

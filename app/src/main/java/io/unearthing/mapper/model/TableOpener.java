@@ -51,7 +51,7 @@ public  class TableOpener extends SQLiteOpenHelper {
                     TripSummaryTableContract.COLUMN_NAME_LOCATIONS  +" INTEGER," +
                     TripSummaryTableContract.COLUMN_NAME_SPEED      +" REAL," +
                     TripSummaryTableContract.COLUMN_NAME_DISTANCE   +" REAL," +
-                    TripSummaryTableContract.COLUMN_NAME_DURATION   +" REAL," +
+                    TripSummaryTableContract.COLUMN_NAME_DURATION   +" REAL" +
                     ")";
 
     private static final String SQL_DELETE_TRIP_SUMMARY_TABLE =

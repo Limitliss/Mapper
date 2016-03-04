@@ -13,8 +13,8 @@ public abstract class AbstractTrip {
     protected String mTitle;
 
     @SerializedName("start_time")
-    protected long mStartTime;
+    protected long mStartTime = -1;
 
     @SerializedName("end_time")
-    protected long mEndTime;
+    protected long mEndTime = -1;
 }

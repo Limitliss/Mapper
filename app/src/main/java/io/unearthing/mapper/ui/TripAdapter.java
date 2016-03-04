@@ -13,13 +13,14 @@ import java.util.List;
 
 import io.unearthing.mapper.R;
 import io.unearthing.mapper.model.Trip;
+import io.unearthing.mapper.model.TripSummary;
 
 /**
  * Created by billybonks on 27/2/16.
  */
 public class TripAdapter extends RecyclerView.Adapter {
 
-    private List<Trip> mTrips;
+    private List<TripSummary> mTrips;
     private Activity mActivity;
     public static class TripViewHolder extends RecyclerView.ViewHolder {
         // each data item is just a string in this case
@@ -32,7 +33,7 @@ public class TripAdapter extends RecyclerView.Adapter {
         }
     }
 
-    public TripAdapter(List<Trip> trips,Activity activity) {
+    public TripAdapter(List<TripSummary> trips,Activity activity) {
         mTrips = trips;
         mActivity = activity;
     }

@@ -38,12 +38,13 @@ import java.util.List;
 import io.unearthing.mapper.ILocationService;
 import io.unearthing.mapper.R;
 import io.unearthing.mapper.model.Trip;
+import io.unearthing.mapper.model.TripSummary;
 import io.unearthing.mapper.services.LocationService;
 import io.unearthing.mapper.ui.TripAdapter;
 
 public class TripListFragment extends Fragment {
 
-    List<Trip> mTrips;
+    List<TripSummary> mTrips;
 
     private final String mServiceName = "io.unearthing.mapper.services.LocationService";
     private boolean mServiceRunning = false;
@@ -71,10 +72,7 @@ public class TripListFragment extends Fragment {
                              Bundle savedInstanceState) {
         final ViewGroup parentVw = container;
         View view = inflater.inflate(R.layout.fragment_trip_list, container, false);
-        mTrips =new Trip(getContext()).findAll(getContext());
-        for(int i = 0; i < mTrips.size(); i++) {
-            mTrips.get(i).getLocations();
-        }
+        mTrips = TripSummary.findAll(getContext());
         TripAdapter adapter = new TripAdapter(mTrips, getActivity());
         RecyclerView mRecyclerView = (RecyclerView)view.findViewById(R.id.trip_list);
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());

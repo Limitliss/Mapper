@@ -11,6 +11,19 @@ import android.database.sqlite.SQLiteDatabase;
 public class Location extends AbstractLocation {
 
     private TableOpener mTableOpener;
+    private android.location.Location mRawLocation;
+
+    public Location(Context context, android.location.Location location){
+        this(context);
+        this.setAccuracy(location.getAccuracy());
+        this.setAltitude(location.getAltitude());
+        this.setBearing(location.getBearing());
+        this.setLatitude(location.getLatitude());
+        this.setLongitude(location.getLongitude());
+        this.setSpeed(location.getSpeed());
+        this.setTimeStamp(location.getTime());
+        mRawLocation = location;
+    }
 
     public Location(Cursor cursor) {
         mLatitude =  cursor.getDouble(cursor.getColumnIndex(TableOpener.LocationTableContract.COLUMN_NAME_LATITUDE));
@@ -40,6 +53,10 @@ public class Location extends AbstractLocation {
         values.put(TableOpener.LocationTableContract.COLUMN_NAME_TRIP, this.mTripId);
         mId = db.insert(TableOpener.LocationTableContract.TABLE_NAME, null, values);
         return mId > 0;
+    }
+
+    public android.location.Location getRawLocation(){
+        return mRawLocation;
     }
 
     public double getLongitude() {

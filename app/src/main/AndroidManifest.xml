@@ -18,8 +18,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
         <service
-            android:name=".services.LocationService"
-            android:process=".trackerService" />
+            android:name=".services.LocationService" />
 
         <activity android:name=".ui.activities.MainActivity">
             <intent-filter>
