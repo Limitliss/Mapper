@@ -31,8 +31,7 @@ public class TripView implements View.OnClickListener {
     List<Trip> mTrips;
     TextView mPointsLabel;
     TextView mTimeSpentLabel;
-    TextView mAltitudeLabel;
-    TextView mAccelerationLabel;
+    TextView mDistanceLabel;
     TextView mSpeedLabel;
     TextView mTitle;
     ImageButton mOptions;
@@ -43,10 +42,9 @@ public class TripView implements View.OnClickListener {
         mParent = parent;//mTrips = trips;
         mTitle = (TextView) view.findViewById(R.id.trip_title);
         mTimeSpentLabel = (TextView) view.findViewById(R.id.time_display);
-        mAccelerationLabel = (TextView) view.findViewById(R.id.acc_label);
         mSpeedLabel = (TextView) view.findViewById(R.id.speed_display);
         mPointsLabel = (TextView) view.findViewById(R.id.points_display);
-        mAltitudeLabel = (TextView) view.findViewById(R.id.alt_display);
+        mDistanceLabel = (TextView) view.findViewById(R.id.distance_display);
         mOptions= (ImageButton) view.findViewById(R.id.options);
         mOptions.setOnClickListener(this);
     }

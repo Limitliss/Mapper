@@ -24,16 +24,15 @@ import android.os.Vibrator;
 
 import com.google.android.gms.location.LocationListener;
 
+import io.unearthing.mapper.model.TableOpener;
 import io.unearthing.mapper.model.Trip;
 
 public class Tracker implements LocationListener, LocationManagerListener {
 
     private Context context;
-    private LocationDb mDb;
     private Trip mTrip;
 
     public Tracker(Context context){
-        mDb = new LocationDbLocal(context);
         this.context = context;
     }
 
