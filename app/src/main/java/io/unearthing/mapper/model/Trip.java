@@ -13,8 +13,6 @@ import com.google.gson.Gson;
 import java.util.ArrayList;
 import java.util.List;
 
-import io.unearthing.mapper.model.definitions.TableOpener;
-
 /**
  * Created by billybonks on 16/2/16.
  */

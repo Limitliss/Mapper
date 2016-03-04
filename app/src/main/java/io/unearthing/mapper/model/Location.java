@@ -5,8 +5,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import io.unearthing.mapper.model.definitions.TableOpener;
-
 /**
  * Created by billybonks on 16/2/16.
  */

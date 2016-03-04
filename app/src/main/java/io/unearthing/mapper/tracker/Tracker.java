@@ -24,8 +24,6 @@ import android.os.Vibrator;
 
 import com.google.android.gms.location.LocationListener;
 
-import io.unearthing.mapper.model.helpers.LocationDb;
-import io.unearthing.mapper.model.helpers.LocationDbLocal;
 import io.unearthing.mapper.model.Trip;
 
 public class Tracker implements LocationListener, LocationManagerListener {

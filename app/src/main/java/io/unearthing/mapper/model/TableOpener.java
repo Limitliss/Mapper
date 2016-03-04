@@ -1,4 +1,4 @@
-package io.unearthing.mapper.model.definitions;
+package io.unearthing.mapper.model;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
