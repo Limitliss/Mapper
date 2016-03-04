@@ -8,15 +8,12 @@ import android.database.sqlite.SQLiteDatabase;
 import com.cloudant.client.api.CloudantClient;
 import com.cloudant.client.api.Database;
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 
 
 import java.util.ArrayList;
 import java.util.List;
 
-import io.unearthing.mapper.model.definitions.LocationTableHelper;
-import io.unearthing.mapper.model.definitions.TripTableHelper;
+import io.unearthing.mapper.model.definitions.TableOpener;
 
 /**
  * Created by billybonks on 16/2/16.
@@ -24,40 +21,38 @@ import io.unearthing.mapper.model.definitions.TripTableHelper;
 public class Trip  extends AbstractTrip {
 
     private List<Location> mLocations;
-    private TripTableHelper mTripTable;
-    private LocationTableHelper mLocationTable;
+    private TableOpener mTableOpener;
     private CloudantClient client;
     private Database db;
 
 
     public Trip(Context context){
-        mTripTable = new TripTableHelper(context);
-        mLocationTable = new LocationTableHelper(context);
+        mTableOpener = new TableOpener(context);
         mLocations = new ArrayList<Location>();
     }
 
     public Trip(Context context, Cursor cursor) {
         this(context);
-        mId = cursor.getLong(cursor.getColumnIndex(TripTableHelper.TripTableContract._ID));
-        mStartTime = cursor.getLong(cursor.getColumnIndex(TripTableHelper.TripTableContract.COLUMN_NAME_START));
-        mEndTime = cursor.getLong(cursor.getColumnIndex(TripTableHelper.TripTableContract.COLUMN_NAME_END));
-        mTitle = cursor.getString(cursor.getColumnIndex(TripTableHelper.TripTableContract.COLUMN_NAME_TITLE));
+        mId = cursor.getLong(cursor.getColumnIndex(TableOpener.TripTableContract._ID));
+        mStartTime = cursor.getLong(cursor.getColumnIndex(TableOpener.TripTableContract.COLUMN_NAME_START));
+        mEndTime = cursor.getLong(cursor.getColumnIndex(TableOpener.TripTableContract.COLUMN_NAME_END));
+        mTitle = cursor.getString(cursor.getColumnIndex(TableOpener.TripTableContract.COLUMN_NAME_TITLE));
     }
 
     public long start(){
-        SQLiteDatabase db = mTripTable.getWritableDatabase();
+        SQLiteDatabase db = mTableOpener.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put(TripTableHelper.TripTableContract.COLUMN_NAME_START, System.currentTimeMillis());
-        values.put(TripTableHelper.TripTableContract.COLUMN_NAME_TITLE, "Untitled");
-        mId = db.insert(TripTableHelper.TripTableContract.TABLE_NAME, null, values);
+        values.put(TableOpener.TripTableContract.COLUMN_NAME_START, System.currentTimeMillis());
+        values.put(TableOpener.TripTableContract.COLUMN_NAME_TITLE, "Untitled");
+        mId = db.insert(TableOpener.TripTableContract.TABLE_NAME, null, values);
         return mId;
     }
 
     public boolean end(){
-        SQLiteDatabase db = mTripTable.getWritableDatabase();
+        SQLiteDatabase db = mTableOpener.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put(TripTableHelper.TripTableContract.COLUMN_NAME_END, System.currentTimeMillis());
-        int rowsAffected = db.update(TripTableHelper.TripTableContract.TABLE_NAME, values,"_ID = ?",new String[]{Long.toString(mId)});
+        values.put(TableOpener.TripTableContract.COLUMN_NAME_END, System.currentTimeMillis());
+        int rowsAffected = db.update(TableOpener.TripTableContract.TABLE_NAME, values,"_ID = ?",new String[]{Long.toString(mId)});
         if (rowsAffected == 1) return true;
         return false;
     }
@@ -82,10 +77,10 @@ public class Trip  extends AbstractTrip {
 
 
     public static Trip find(long id, Context context){
-        String table = TripTableHelper.TripTableContract.TABLE_NAME;
+        String table = TableOpener.TripTableContract.TABLE_NAME;
         String where = "_ID = ?";
         String[] args = new String[]{Long.toString(id)};
-        SQLiteDatabase db = new TripTableHelper(context).getReadableDatabase();
+        SQLiteDatabase db = new TableOpener(context).getReadableDatabase();
         Cursor c = db.query(table, null, where, args, null, null, null);
         Trip trip = new Trip(context,c);
         c.close();
@@ -94,7 +89,7 @@ public class Trip  extends AbstractTrip {
     }
 
     public static List<Trip> findAll(Context context){
-        SQLiteDatabase db = new TripTableHelper(context).getReadableDatabase();
+        SQLiteDatabase db = new TableOpener(context).getReadableDatabase();
         String query = "SELECT * from trip order by _id DESC";
         Cursor c =  db.rawQuery(query, null);
         List<Trip> trips = new ArrayList<>();
@@ -107,13 +102,13 @@ public class Trip  extends AbstractTrip {
 
     private Cursor getLocationsCursor() {
         if(mId > -1) {
-            SQLiteDatabase db = mLocationTable.getReadableDatabase();
-            String[] columns = {LocationTableHelper.LocationTableContract.COLUMN_NAME_LATITUDE,
-                    LocationTableHelper.LocationTableContract.COLUMN_NAME_LONGITUDE,
-                    LocationTableHelper.LocationTableContract.COLUMN_NAME_ACCURACY};
-            return db.query(LocationTableHelper.LocationTableContract.TABLE_NAME, null,
-                    LocationTableHelper.LocationTableContract.COLUMN_NAME_TRIP + " = "+ mId,
-                    null, null, null, LocationTableHelper.LocationTableContract.COLUMN_NAME_TIMESTAMP + " ASC", null);
+            SQLiteDatabase db = mTableOpener.getReadableDatabase();
+            String[] columns = {TableOpener.LocationTableContract.COLUMN_NAME_LATITUDE,
+                    TableOpener.LocationTableContract.COLUMN_NAME_LONGITUDE,
+                    TableOpener.LocationTableContract.COLUMN_NAME_ACCURACY};
+            return db.query(TableOpener.LocationTableContract.TABLE_NAME, null,
+                    TableOpener.LocationTableContract.COLUMN_NAME_TRIP + " = "+ mId,
+                    null, null, null, TableOpener.LocationTableContract.COLUMN_NAME_TIMESTAMP + " ASC", null);
         } else {
             throw new Error("Needs a trip id");
         }
@@ -121,14 +116,13 @@ public class Trip  extends AbstractTrip {
 
 
     public boolean delete(){
-        SQLiteDatabase tDb = mTripTable.getWritableDatabase();
-        SQLiteDatabase lDb = mLocationTable.getWritableDatabase();
+        SQLiteDatabase tDb = mTableOpener.getWritableDatabase();
         String [] args =  new String[]{Long.toString(this.mId)};
-        int rowCount = tDb.delete(TripTableHelper.TripTableContract.TABLE_NAME,
+        int rowCount = tDb.delete(TableOpener.TripTableContract.TABLE_NAME,
                 "_id = ?",
                args);
-        int locationsDeletedCount = lDb.delete(LocationTableHelper.LocationTableContract.TABLE_NAME,
-                LocationTableHelper.LocationTableContract.COLUMN_NAME_TRIP +" = ?",
+        int locationsDeletedCount = tDb.delete(TableOpener.LocationTableContract.TABLE_NAME,
+                TableOpener.LocationTableContract.COLUMN_NAME_TRIP +" = ?",
                 args);
         int locationCount = mLocations.size();
         if((rowCount == 1) && (locationsDeletedCount == locationCount)){

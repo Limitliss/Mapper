@@ -22,24 +22,21 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 
-import io.unearthing.mapper.model.Location;
-import io.unearthing.mapper.model.definitions.LocationTableHelper;
-import io.unearthing.mapper.model.definitions.LocationTableHelper.LocationTableContract;
-import io.unearthing.mapper.model.definitions.TripTableHelper;
-import io.unearthing.mapper.model.definitions.TripTableHelper.TripTableContract;
+import io.unearthing.mapper.model.definitions.TableOpener;
+import io.unearthing.mapper.model.definitions.TableOpener.LocationTableContract;
+import io.unearthing.mapper.model.definitions.TableOpener.TripTableContract;
 
 public class LocationDbLocal implements LocationDb {
-    private LocationTableHelper mLocationTable;
-    private TripTableHelper mTripTable;
+    private TableOpener mTableOpener;
 
     public LocationDbLocal(Context context){
-        mLocationTable = new LocationTableHelper(context);
-        mTripTable = new TripTableHelper(context);
+        mTableOpener = new TableOpener(context);
+        mTableOpener = new TableOpener(context);
     }
 
     @Override
     public int countTripLocations() {
-        SQLiteDatabase db = mLocationTable.getReadableDatabase();
+        SQLiteDatabase db = mTableOpener.getReadableDatabase();
         String query = "select count(" + TripTableContract._ID + ") as count from " + LocationTableContract.TABLE_NAME;
         Cursor cursor = db.rawQuery(query, null);
         if(cursor.moveToFirst()){
@@ -50,7 +47,7 @@ public class LocationDbLocal implements LocationDb {
 
     @Override
     public int countTrips() {
-        SQLiteDatabase db = mTripTable.getReadableDatabase();
+        SQLiteDatabase db = mTableOpener.getReadableDatabase();
         String query = "select count(" + TripTableContract._ID + ") as count from " + TripTableContract.TABLE_NAME;
         Cursor cursor = db.rawQuery(query, null);
         if(cursor.moveToFirst()){
@@ -61,9 +58,9 @@ public class LocationDbLocal implements LocationDb {
 
     @Override
     public void clearDatabase(){
-        SQLiteDatabase db = mLocationTable.getWritableDatabase();
-        mLocationTable.onUpgrade(db, 4, 4);
-        SQLiteDatabase tdb = mTripTable.getWritableDatabase();
-        mTripTable.onUpgrade(tdb,4,4);
+        SQLiteDatabase db = mTableOpener.getWritableDatabase();
+        mTableOpener.onUpgrade(db, 4, 4);
+        SQLiteDatabase tdb = mTableOpener.getWritableDatabase();
+        mTableOpener.onUpgrade(tdb,4,4);
     }
 }
